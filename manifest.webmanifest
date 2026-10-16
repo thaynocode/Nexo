@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "NEXO 6º — Jornada de Aprendizagem",
+  "short_name": "NEXO 6º",
+  "description": "Aprenda e evolua com desafios de todas as matérias do 6º ano.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080c19",
+  "theme_color": "#080d20",
+  "lang": "pt-BR",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
