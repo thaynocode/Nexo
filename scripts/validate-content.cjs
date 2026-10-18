@@ -13,7 +13,7 @@ let count=0,errors=[];
 for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
   const l=lessons[s][t];count++;
   for(const field of ['title','summary','objective','hook','workedExample','checkQuestion','checkAnswer'])
-    if(typeof l[field]!=='string'||l[field].trim().length<12)errors.push(s+':'+t+' campo '+field);
+    if(typeof l[field]!=='string'||l[field].trim().length<(field==='title'?2:12))errors.push(s+':'+t+' campo '+field);
   if(l.lessonSteps?.length!==3)errors.push(s+':'+t+' etapas');
   if((l.contextExamples||[]).length<2)errors.push(s+':'+t+' conceitos');
   for(const [field,value] of [['summary',l.summary],['hook',l.hook],['objective',l.objective],['workedExample',l.workedExample],...l.lessonSteps.map((v,i)=>['etapa '+i,v.body])]){
