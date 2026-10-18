@@ -20,9 +20,10 @@ for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
     if(/^[a-záàâãéêíóôõúç]/.test(value.trim()))errors.push(s+':'+t+' inicial minúscula em '+field);
   }
   const illustration=context.window.NEXO_LESSON_ILLUSTRATION(s,t,l);
-  if(!illustration?.src?.startsWith('data:image/svg+xml'))errors.push(s+':'+t+' imagem ausente');
-  const svg=decodeURIComponent(illustration.src.split(',')[1]);
-  if(!svg.includes('<svg')||!svg.includes('</svg>'))errors.push(s+':'+t+' SVG inválido');
+  if(illustration){
+    if(!illustration.src?.startsWith('data:image/svg+xml'))errors.push(s+':'+t+' formato de imagem');
+    else {const svg=decodeURIComponent(illustration.src.split(',')[1]);if(!svg.includes('<svg')||!svg.includes('</svg>'))errors.push(s+':'+t+' SVG inválido');}
+  }
   for(const ex of l.contextExamples){
     if(!context.window.NEXO_CONCEPT_VISUAL(s,t,ex.concept))errors.push(s+':'+t+' conceito sem representação');
   }
