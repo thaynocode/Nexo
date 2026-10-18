@@ -22,7 +22,30 @@ else {caption='Esquema visual de '+lesson.title.toLowerCase()+': observe as trê
 // Os conceitos das aulas são apresentados em português, com destaque visual legível.
 // Textos em inglês permanecem somente quando fazem parte do próprio conteúdo de Língua Inglesa.
 if(s===0&&t===0){caption='Uma notícia informa um fato; uma fábula narra uma história; uma receita ensina um procedimento.';art='';const items=[['NOTÍCIA','Informa um fato'],['FÁBULA','Conta uma história'],['RECEITA','Ensina etapas']];items.forEach((it,i)=>{let x=32+i*206;art+=rect(x,91,190,148,['#385a82','#5e4c8a','#326c73'][i],18);art+=text(x+95,143,it[0],21);art+=text(x+95,185,it[1],15);});}
-if(s===1&&t===0){caption='Quatro operações com situações do cotidiano: juntar, retirar, agrupar e repartir.';art='';const items=[['ADIÇÃO','3 + 2 = 5'],['SUBTRAÇÃO','8 − 3 = 5'],['MULTIPLICAÇÃO','3 × 4 = 12'],['DIVISÃO','12 ÷ 3 = 4']];items.forEach((it,i)=>{let x=52+(i%2)*276,y=43+Math.floor(i/2)*135;art+=rect(x,y,260,120,['#385a82','#5e4c8a','#326c73','#555c92'][i],16);art+=text(x+130,y+45,it[0],20);art+=text(x+130,y+89,it[1],26);});}
+if(s===1&&t===0){
+caption='Adição junta, subtração retira, multiplicação reúne grupos iguais e divisão reparte igualmente.';
+art='';
+const panels=[
+{title:'ADIÇÃO',equation:'3 + 2 = 5',dots:[3,2],mode:'add'},
+{title:'SUBTRAÇÃO',equation:'8 − 3 = 5',dots:[8,3],mode:'subtract'},
+{title:'MULTIPLICAÇÃO',equation:'3 × 4 = 12',dots:[4,4,4],mode:'multiply'},
+{title:'DIVISÃO',equation:'12 ÷ 3 = 4',dots:[4,4,4],mode:'divide'}
+];
+panels.forEach((p,i)=>{
+const x=22+(i%2)*310,y=20+Math.floor(i/2)*151;
+art+=rect(x,y,286,140,['#385a82','#5e4c8a','#326c73','#555c92'][i],14);
+art+=text(x+143,y+25,p.title,17);
+if(p.mode==='add'){
+for(let j=0;j<5;j++)art+=circle(x+66+j*34,y+66,10,j<3?'#ffd080':'#84dcd0');
+}else if(p.mode==='subtract'){
+for(let j=0;j<8;j++){let dx=x+49+j*27;art+=circle(dx,y+66,9,j<3?'#52617d':'#84dcd0');if(j<3)art+=line(dx-9,y+55,dx+9,y+77,'#f6c0c0',2)}
+}else{
+for(let row=0;row<3;row++)for(let col=0;col<4;col++)art+=circle(x+79+col*35,y+46+row*24,8,['#f5cb83','#84dcd0','#c6a6ff'][row]);
+if(p.mode==='divide')art+=line(x+62,y+36,x+62,y+105,'#d9e3ff',2)+line(x+208,y+36,x+208,y+105,'#d9e3ff',2);
+}
+art+=text(x+143,y+123,p.equation,22);
+});
+}
 if(s===0&&t===1){caption='Substantivo nomeia, adjetivo caracteriza e verbo indica ação, estado ou fenômeno.';art='';const items=[['SUBSTANTIVO','MENINA'],['ADJETIVO','CURIOSA'],['VERBO','LÊ']];items.forEach((it,i)=>{let x=25+i*209;art+=rect(x,103,197,130,['#385a82','#5e4c8a','#326c73'][i],15);art+=text(x+98,149,it[0],18);art+=text(x+98,192,it[1],22);});}
 if(s===4&&t===5){caption='Tempo é a condição da atmosfera em um momento; clima é o padrão observado ao longo de muitos anos.';}
 const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" role="img" aria-label="'+esc(caption)+'"><rect width="640" height="330" rx="25" fill="#17243b"/><circle cx="550" cy="30" r="120" fill="#273558" opacity=".45"/>'+art+'</svg>';return {src:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),caption};
