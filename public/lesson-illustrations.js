@@ -48,7 +48,31 @@ art+=text(x+143,y+123,p.equation,22);
 }
 if(s===0&&t===1){caption='Substantivo nomeia, adjetivo caracteriza e verbo indica ação, estado ou fenômeno.';art='';const items=[['SUBSTANTIVO','MENINA'],['ADJETIVO','CURIOSA'],['VERBO','LÊ']];items.forEach((it,i)=>{let x=25+i*209;art+=rect(x,103,197,130,['#385a82','#5e4c8a','#326c73'][i],15);art+=text(x+98,149,it[0],18);art+=text(x+98,192,it[1],22);});}
 if(s===4&&t===5){caption='Tempo é a condição da atmosfera em um momento; clima é o padrão observado ao longo de muitos anos.';}
-if(caption.startsWith('Compare os conceitos de ')){
+if(s===1&&t===3){
+caption='Valor posicional: 2.347 = 2 milhares + 3 centenas + 4 dezenas + 7 unidades.';
+art='';
+const cols=[['MILHAR','2','2.000'],['CENTENA','3','300'],['DEZENA','4','40'],['UNIDADE','7','7']];
+cols.forEach((v,i)=>{const x=16+i*157;art+=rect(x,51,148,228,['#394d80','#355e73','#60517f','#42645e'][i],15);art+=text(x+74,93,v[0],17);art+=text(x+74,172,v[1],61);art+=text(x+74,226,v[2],22);});
+art+=text(320,308,'2.000 + 300 + 40 + 7 = 2.347',23);
+}
+if(s===1&&t===4){
+caption='Múltiplos de 4 e 6: 12 é o primeiro múltiplo comum positivo. Divisores de 12: 1, 2, 3, 4, 6 e 12.';
+art=rect(24,28,592,275,'#243751',17);
+art+=text(320,68,'ENCONTRE O PRIMEIRO MÚLTIPLO COMUM',21);
+[['4',4,8,12,16,20,24],['6',6,12,18,24,30,36]].forEach((row,i)=>{
+const y=115+i*72;
+art+=text(68,y,'× '+row[0],23);
+row.slice(1).forEach((n,j)=>{const x=151+j*82;art+=rect(x-32,y-27,64,48,n===12?'#287b69':'#42577c',10);art+=text(x,y+6,String(n),21);});
+});
+art+=text(320,279,'MMC(4, 6) = 12',25,'#9df2cf');
+}
+if(s===4&&(t===4||t===8)){
+caption='Latitude mede a distância angular ao Equador; longitude mede a distância angular ao meridiano de Greenwich.';
+art=circle(320,161,111,'#355e86','#c6dcf2',3)+line(209,161,431,161,'#ffce83',4)+line(320,50,320,272,'#a99aff',4);
+art+=text(320,36,'NORTE',18)+text(320,306,'SUL',18)+text(480,153,'EQUADOR: 0°',18)+text(117,203,'GREENWICH',17);
+}
+if(caption.startsWith('Compare os conceitos de ')){return null;/* Ilustração genérica suprimida até receber diagrama validado. */
+
 const examples=(lesson.contextExamples||[]).slice(0,3);
 art='';
 examples.forEach((example,i)=>{
