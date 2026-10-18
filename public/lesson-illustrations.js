@@ -48,7 +48,7 @@ art+=text(x+143,y+123,p.equation,22);
 }
 if(s===0&&t===1){caption='Substantivo nomeia, adjetivo caracteriza e verbo indica ação, estado ou fenômeno.';art='';const items=[['SUBSTANTIVO','MENINA'],['ADJETIVO','CURIOSA'],['VERBO','LÊ']];items.forEach((it,i)=>{let x=25+i*209;art+=rect(x,103,197,130,['#385a82','#5e4c8a','#326c73'][i],15);art+=text(x+98,149,it[0],18);art+=text(x+98,192,it[1],22);});}
 if(s===4&&t===5){caption='Tempo é a condição da atmosfera em um momento; clima é o padrão observado ao longo de muitos anos.';}
-if(!art||art.includes('OBSERVE')||art.includes('COMPREENDA')){
+if(caption.startsWith('Compare os conceitos de ')){
 const examples=(lesson.contextExamples||[]).slice(0,3);
 art='';
 examples.forEach((example,i)=>{
