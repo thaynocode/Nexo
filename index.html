@@ -64,7 +64,17 @@ ${ill?`<figure style="margin:16px 0 0"><img src="${ill.src}" alt="${esc(ill.capt
 <div style="display:grid;gap:16px;margin-top:18px">
 ${concepts.map((ex,i)=>`<article style="overflow:hidden;border-radius:18px;border:1px solid rgba(160,140,255,.25);background:rgba(132,108,255,.07)">
 <div style="padding:14px 18px;background:rgba(130,110,230,.16);display:flex;gap:10px;align-items:center"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;border-radius:50%;background:${accent};color:#16223a;font-weight:900">${i+1}</span><h3 style="font-size:18px;margin:0">${esc(ex.concept)}</h3></div>
-<div style="padding:18px"><div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:30px" aria-hidden="true">${['📖','💡','🔎','🧩'][i%4]}</span><p style="font-size:17px;line-height:1.8;margin:0">${esc(ex.explanation)}</p></div></div>
+<div style="padding:18px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;align-items:stretch">
+<div style="min-height:130px;padding:16px;border-radius:14px;background:linear-gradient(145deg,rgba(101,89,196,.25),rgba(38,154,176,.17));border:1px solid rgba(160,140,255,.25);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:8px" role="img" aria-label="Representação visual de ${esc(ex.concept)}">
+<div style="font-size:37px;line-height:1.2" aria-hidden="true">${[['📰','✍️','📚','🔎'],['➕','➖','✖️','➗'],['🔬','🌱','🌍','🧬'],['🏺','📜','🕰️','🏛️'],['🌎','🧭','🌤️','🗺️'],['🔤','💬','📖','🗣️'],['🎨','🎵','🎭','🖌️'],['⚽','🏃','🤸','🤝']][sIdx][i%4]}</div>
+<div style="font-size:13px;font-weight:800;letter-spacing:.3px;overflow-wrap:anywhere">${esc(ex.concept)}</div>
+</div>
+<div style="display:flex;flex-direction:column;justify-content:center;gap:7px;padding:4px">
+<strong style="font-size:13px;color:#b8a9ff">EXEMPLO DO COTIDIANO</strong>
+<p style="font-size:17px;line-height:1.75;margin:0">${esc(ex.explanation)}</p>
+</div></div>
+</div>
 </article>`).join('')}
 </div>
 <div style="padding:18px;margin-top:20px;border-radius:14px;background:rgba(78,194,160,.1);border:1px solid rgba(78,194,160,.25)"><strong>✏️ AGORA PENSE</strong><p style="line-height:1.7;margin:9px 0 0">${esc(lesson.studyTip||'Explique com suas palavras o que você aprendeu.')}</p></div>
