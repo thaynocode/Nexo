@@ -1,0 +1,21 @@
+name: Testes de interface móvel
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save @playwright/test
+      - run: npx playwright install --with-deps chromium
+      - name: Testar em três tamanhos de tela
+        run: |
+          python3 -m http.server 4173 --directory public &
+          npx playwright test tests/mobile.spec.cjs --reporter=line
