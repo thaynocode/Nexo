@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const root=process.cwd();
 const html=fs.readFileSync(root+'/index.html','utf8');
 const context={window:{}};
-for(const file of ['public/lessons.js','public/lesson-illustrations.js','public/concept-visuals.js','public/visual-specs.js','public/didactic-visuals.js','public/rich-visuals.js']){
+for(const file of ['public/lessons.js','public/lesson-illustrations.js','public/concept-visuals.js','public/visual-specs.js','public/didactic-visuals.js','public/rich-visuals.js','public/concept-diagrams.js']){
   vm.runInNewContext(fs.readFileSync(root+'/'+file,'utf8'),context,{filename:file,timeout:5000});
 }
 const lessons=context.window.NEXO_LESSONS;
@@ -41,6 +41,15 @@ for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
 }
 assert(html.includes('/visual-specs.js')&&html.includes('/didactic-visuals.js'),'Arquivos visuais não carregados');
 assert(html.includes('/rich-visuals.js'),'Biblioteca visual premium não carregada');
+assert(html.includes('/concept-diagrams.js'),'Diagramas conceituais não carregados');
+for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
+ const image=context.window.NEXO_CONCEPT_DIAGRAM(s,t,lessons[s][t]);
+ assert(image?.src?.startsWith('data:image/svg+xml'),'Diagrama ausente: '+s+':'+t);
+ const svg=decodeURIComponent(image.src.split(',')[1]);
+ assert(svg.includes('<svg')&&svg.includes('</svg>'),'Diagrama inválido: '+s+':'+t);
+ assert(image.caption?.length>10,'Legenda ausente');
+}
+
 for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
  const illustration=context.window.NEXO_RICH_VISUAL(s,t,lessons[s][t]);
  assert(illustration?.src?.startsWith('data:image/svg+xml'),'Ilustração enriquecida ausente');
