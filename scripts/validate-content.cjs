@@ -29,7 +29,7 @@ for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
 }
 assert.equal(count,77);
 const dataStart=html.indexOf('const DATA=')+11;
-const dataEnd=html.indexOf('];\\nconst icons',dataStart)+1;
+const dataEnd=html.indexOf('];\nconst icons',dataStart)+1;
 assert(dataStart>10&&dataEnd>dataStart,'Banco de questões não encontrado');
 const subjects=JSON.parse(html.slice(dataStart,dataEnd));
 assert.equal(subjects.length,8);
