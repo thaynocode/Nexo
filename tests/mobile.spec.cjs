@@ -13,7 +13,7 @@ for(const device of devices){
    await page.getByRole('button',{name:/Estudar este conteúdo/}).click();
    await expect(page.getByText('EXPLICAÇÃO DA PROFESSORA')).toBeVisible();
    await expect(page.locator('figure img')).toHaveAttribute('src',/^data:image\/svg\+xml/);
-   await page.getByRole('button',{name:/Iniciante|Essencial|Explorador|Básico/}).last().click().catch(async()=>{await page.locator('.panel button.primary').last().click()});
+   await page.locator('.panel button.primary:enabled').last().click();
    await expect(page.locator('.answer')).toHaveCount(4);
    await page.locator('.answer').first().click();
    await expect(page.locator('.feedback')).toBeVisible();
