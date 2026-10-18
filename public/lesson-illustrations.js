@@ -17,7 +17,7 @@ else if(s===4&&t===5){caption='O tempo descreve o dia; o clima é estudado com r
 else if(s===5&&(t===1||t===5)){caption='No presente, o verbo to be muda de acordo com o pronome.';const words=['I  →  AM','SHE  →  IS','THEY  →  ARE'];words.forEach((w,i)=>{art+=rect(170,70+i*76,300,60,['#46558a','#5b4c8e','#315f78'][i],13);art+=text(320,108+i*76,w,25)});}
 else if(s===6&&(t===0||t===1)){caption='As cores primárias tradicionais podem ser usadas para criar novas combinações.';['#e86671','#f2d36c','#6099ed'].forEach((color,i)=>art+=circle(210+i*110,151,61,color));art+=text(320,263,'CORES E FORMAS',23);}
 else if(s===7&&(t===3||t===4||t===7)){caption='Esportes têm objetivos diferentes: alcançar uma marca, acertar um alvo ou ocupar espaços.';for(let i=0;i<3;i++)art+=circle(192+i*127,157,52,'#283b58','#ae98f9',4);art+=circle(192,157,28,'none','#f6d18e',4)+circle(192,157,8,'#f6d18e');art+=line(320,126,320,188,'#a5c8ff',4)+line(295,156,345,156,'#a5c8ff',4);art+=circle(446,157,17,'#f5c16f');art+=text(192,250,'ALVO',17)+text(320,250,'ESPAÇO',17)+text(446,250,'BOLA',17);}
-else {caption='Quadro de conceitos de '+lesson.title.toLowerCase()+': compare as ideias com os exemplos explicados abaixo.';const xs=[112,266,420],colors=['#4d5b91','#3f6480','#65508c'];labels.forEach((label,i)=>{art+=rect(xs[i],105,115,114,colors[i],18);let words=String(label).split(/\s+/);if(label.length>13||words.length>2){let mid=Math.ceil(words.length/2);if(words.length===1){let cut=Math.ceil(label.length/2);art+=text(xs[i]+57,150,label.slice(0,cut),12);art+=text(xs[i]+57,172,label.slice(cut),12)}else{art+=text(xs[i]+57,150,words.slice(0,mid).join(' '),12);art+=text(xs[i]+57,172,words.slice(mid).join(' '),12)}}else{art+=text(xs[i]+57,161,label.length>10?13:17)}if(i<2)art+=line(xs[i]+119,162,xs[i]+145,162,'#e4c5ff',4)});}
+else {caption='Compare os conceitos de '+lesson.title.toLowerCase()+' e observe os exemplos apresentados na aula.';const xs=[112,266,420],colors=['#4d5b91','#3f6480','#65508c'];labels.forEach((label,i)=>{art+=rect(xs[i],105,115,114,colors[i],18);let words=String(label).split(/\s+/);if(label.length>13||words.length>2){let mid=Math.ceil(words.length/2);if(words.length===1){let cut=Math.ceil(label.length/2);art+=text(xs[i]+57,150,label.slice(0,cut),12);art+=text(xs[i]+57,172,label.slice(cut),12)}else{art+=text(xs[i]+57,150,words.slice(0,mid).join(' '),12);art+=text(xs[i]+57,172,words.slice(mid).join(' '),12)}}else{art+=text(xs[i]+57,161,label.length>10?13:17)}if(i<2)art+=line(xs[i]+119,162,xs[i]+145,162,'#e4c5ff',4)});}
 
 // Os conceitos das aulas são apresentados em português, com destaque visual legível.
 // Textos em inglês permanecem somente quando fazem parte do próprio conteúdo de Língua Inglesa.
@@ -48,6 +48,21 @@ art+=text(x+143,y+123,p.equation,22);
 }
 if(s===0&&t===1){caption='Substantivo nomeia, adjetivo caracteriza e verbo indica ação, estado ou fenômeno.';art='';const items=[['SUBSTANTIVO','MENINA'],['ADJETIVO','CURIOSA'],['VERBO','LÊ']];items.forEach((it,i)=>{let x=25+i*209;art+=rect(x,103,197,130,['#385a82','#5e4c8a','#326c73'][i],15);art+=text(x+98,149,it[0],18);art+=text(x+98,192,it[1],22);});}
 if(s===4&&t===5){caption='Tempo é a condição da atmosfera em um momento; clima é o padrão observado ao longo de muitos anos.';}
+if(!art||art.includes('OBSERVE')||art.includes('COMPREENDA')){
+const examples=(lesson.contextExamples||[]).slice(0,3);
+art='';
+examples.forEach((example,i)=>{
+const x=17+i*209;
+art+=rect(x,56,196,224,['#354e79','#365d6d','#5a477d'][i],16);
+const name=String(example.concept||'').split(' ');
+const mid=Math.ceil(name.length/2);
+art+=text(x+98,109,name.slice(0,mid).join(' '),16);
+if(name.length>1)art+=text(x+98,133,name.slice(mid).join(' '),16);
+art+=line(x+22,156,x+174,156,'#b6c7e8',2);
+art+=text(x+98,204,'EXEMPLO',15);
+});
+caption='Três conceitos reais desta aula, identificados pelos seus nomes. Leia os exemplos completos abaixo.';
+}
 const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" role="img" aria-label="'+esc(caption)+'"><rect width="640" height="330" rx="25" fill="#17243b"/><circle cx="550" cy="30" r="120" fill="#273558" opacity=".45"/>'+art+'</svg>';return {src:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),caption};
 }
 window.NEXO_LESSON_ILLUSTRATION=render;
