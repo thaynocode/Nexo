@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const root=process.cwd();
 const html=fs.readFileSync(root+'/index.html','utf8');
 const context={window:{}};
-for(const file of ['public/lessons.js','public/lesson-illustrations.js','public/concept-visuals.js','public/visual-specs.js','public/didactic-visuals.js']){
+for(const file of ['public/lessons.js','public/lesson-illustrations.js','public/concept-visuals.js','public/visual-specs.js','public/didactic-visuals.js','public/rich-visuals.js']){
   vm.runInNewContext(fs.readFileSync(root+'/'+file,'utf8'),context,{filename:file,timeout:5000});
 }
 const lessons=context.window.NEXO_LESSONS;
@@ -40,6 +40,15 @@ for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
  assert(!image.caption.includes('17 — 17'),'Figura genérica incorreta');
 }
 assert(html.includes('/visual-specs.js')&&html.includes('/didactic-visuals.js'),'Arquivos visuais não carregados');
+assert(html.includes('/rich-visuals.js'),'Biblioteca visual premium não carregada');
+for(let s=0;s<lessons.length;s++)for(let t=0;t<lessons[s].length;t++){
+ const illustration=context.window.NEXO_RICH_VISUAL(s,t,lessons[s][t]);
+ assert(illustration?.src?.startsWith('data:image/svg+xml'),'Ilustração enriquecida ausente');
+ const svg=decodeURIComponent(illustration.src.split(',')[1]);
+ assert(svg.includes('viewBox="0 0 760 440"'),'Proporção responsiva inválida');
+ assert(!svg.includes('>17</text>'),'Número de preenchimento genérico detectado');
+}
+
 
 const dataStart=html.indexOf('const DATA=')+11;
 const dataEnd=html.indexOf('];\nconst icons',dataStart)+1;
