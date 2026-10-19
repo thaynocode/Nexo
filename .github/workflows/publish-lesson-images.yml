@@ -1,0 +1,40 @@
+name: Publicar imagens das aulas
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/generate-lesson-images.cjs'
+      - 'public/concept-diagrams.js'
+      - 'public/visual-specs.js'
+      - 'public/lessons.js'
+      - '.github/workflows/publish-lesson-images.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar conversor de imagens
+        run: npm install --no-save --no-package-lock sharp@0.34.4
+      - name: Gerar 77 arquivos WebP
+        run: node scripts/generate-lesson-images.cjs
+      - name: Confirmar quantidade
+        run: test "$(find public/images/lessons -maxdepth 1 -name '[0-9][0-9]-[0-9][0-9].webp' | wc -l)" -eq 77
+      - name: Enviar imagens para o repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images/lessons
+          if git diff --cached --quiet; then
+            echo "Imagens já estão atualizadas."
+          else
+            git commit -m "Publicar 77 imagens WEBP para as aulas [skip ci]"
+            git push
+          fi
