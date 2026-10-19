@@ -18,7 +18,7 @@ const entry=c.window.NEXO_UNSPLASH_PHOTOS[0][0];
 const photo=entry.photos[0];photo.photographer='<img onerror=alert(1)>';assert(!c.window.NEXO_UNSPLASH_VISUAL(0,0).includes('<img onerror'));
 photo.url='javascript:alert(1)';assert.equal(c.window.NEXO_UNSPLASH_VISUAL(0,0),'');
 const html=fs.readFileSync('index.html','utf8');
-assert.equal((html.match(/NEXO_UNSPLASH_VISUAL\?\./g)||[]).length,2);
-for(const file of ['sw.js','public/sw.js']){const sw=fs.readFileSync(file,'utf8');assert(sw.includes('nexo-pwa-v23'));assert(sw.includes('/unsplash-photos.js'));assert(sw.includes('/unsplash-visuals.js'));}
+assert.equal((html.match(/NEXO_UNSPLASH_VISUAL\?\./g)||[]).length,1,'Fotos de tema somente nas aulas');
+for(const file of ['sw.js','public/sw.js']){const sw=fs.readFileSync(file,'utf8');assert(sw.includes('nexo-pwa-v24'));assert(sw.includes('/unsplash-photos.js'));assert(sw.includes('/unsplash-visuals.js'));assert(sw.includes('/question-visuals.js'));}
 for(const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))if(match[1].trim())new vm.Script(match[1]);
 console.log('PASS: 77 lições, créditos, URLs, estabilidade, segurança, cache offline e sintaxe.');

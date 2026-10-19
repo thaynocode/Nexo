@@ -14,5 +14,7 @@ jobs:
           node-version: '22'
       - name: Validar integração Unsplash
         run: node tests/unsplash.cjs
+      - name: Validar exemplos visuais dos exercícios
+        run: node tests/question-visuals.cjs
       - name: Validar aulas e ilustrações
         run: node scripts/validate-content.cjs
