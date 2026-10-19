@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/generate-lesson-images.cjs'
+      - 'scripts/create-realistic-cell-lesson.cjs'
       - 'public/concept-diagrams.js'
       - 'public/visual-specs.js'
       - 'public/lessons.js'
@@ -25,6 +26,8 @@ jobs:
         run: npm install --no-save --no-package-lock sharp@0.34.4
       - name: Gerar 77 arquivos WebP
         run: node scripts/generate-lesson-images.cjs
+      - name: Substituir aula de células por fotografias reais
+        run: node scripts/create-realistic-cell-lesson.cjs
       - name: Confirmar quantidade
         run: test "$(find public/images/lessons -maxdepth 1 -name '[0-9][0-9]-[0-9][0-9].webp' | wc -l)" -eq 77
       - name: Enviar imagens para o repositório
