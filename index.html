@@ -53,7 +53,9 @@ if(!lesson)return '<div class="panel"><h2>Aula indisponível</h2><button class="
 // O conteúdo da aula é exibido pelas etapas didáticas validadas.
 const concepts=lesson.contextExamples||[];
 const keepOriginal=(sIdx===1&&[0,1,2,3,4,10].includes(tIdx))||(sIdx===2&&[0,1,3,7].includes(tIdx))||(sIdx===4&&tIdx===5);
-const ill=window.NEXO_CONCEPT_DIAGRAM?.(sIdx,tIdx,lesson) || (keepOriginal?window.NEXO_LESSON_ILLUSTRATION?.(sIdx,tIdx,lesson):null) || window.NEXO_RICH_VISUAL?.(sIdx,tIdx,lesson);
+const diagram=window.NEXO_CONCEPT_DIAGRAM?.(sIdx,tIdx,lesson) || (keepOriginal?window.NEXO_LESSON_ILLUSTRATION?.(sIdx,tIdx,lesson):null) || window.NEXO_RICH_VISUAL?.(sIdx,tIdx,lesson);
+const imageFile='/images/lessons/'+String(sIdx+1).padStart(2,'0')+'-'+String(tIdx+1).padStart(2,'0')+'.webp';
+const ill=diagram?{src:imageFile,caption:'Imagem didática de '+lesson.title,backup:diagram.src}:null;
 const accent=['#9b8cff','#7ddbcf','#ffc780','#8eb6ff'][sIdx%4];
 return `<div class="quizwrap">
 <button class="back" onclick="navigate('topic')">← Voltar aos conteúdos</button>
@@ -65,7 +67,7 @@ ${lesson.lessonSteps?`<div class="panel" style="margin:18px 0;padding:24px"><spa
 <p style="font-size:17px;line-height:1.85;margin:0 0 22px">${esc(lesson.summary)}</p>
 </div>
 ${ill?`<div class="panel" style="margin:18px 0;padding:24px"><span class="tag">ETAPA 2 DE 4 • OBSERVE</span><h2 style="margin:12px 0">Explore o conceito visualmente</h2><p style="font-size:15px;line-height:1.65">Analise cada parte do desenho e relacione-a à explicação.</p>
-<figure style="margin:16px 0 0"><img src="${ill.src}" alt="${esc(ill.caption)}" loading="lazy" style="display:block;width:100%;max-width:680px;height:auto;margin:auto;border-radius:16px;border:1px solid rgba(160,140,255,.25)"><figcaption style="font-size:15px;line-height:1.7;margin-top:14px;padding:12px 15px;background:rgba(140,130,240,.09);border-radius:12px">👀 ${esc(ill.caption)}</figcaption></figure></div>`:''}
+<figure style="margin:16px 0 0"><img src="${ill.src}" onerror="this.onerror=null;this.src=this.dataset.backup" data-backup="${ill.backup||ill.src}" alt="${esc(ill.caption)}" loading="lazy" style="display:block;width:100%;max-width:680px;height:auto;margin:auto;border-radius:16px;border:1px solid rgba(160,140,255,.25)"><figcaption style="font-size:15px;line-height:1.7;margin-top:14px;padding:12px 15px;background:rgba(140,130,240,.09);border-radius:12px">👀 ${esc(ill.caption)}</figcaption></figure></div>`:''}
 ${lesson.lessonSteps?`<div class="panel" style="margin:18px 0;padding:24px"><span class="tag">👩‍🏫 EXPLICAÇÃO DA PROFESSORA</span><h2 style="margin:12px 0">Vamos aprender passo a passo</h2><div style="display:grid;gap:16px;margin-top:18px">${lesson.lessonSteps.map((step,i)=>`<section style="padding:20px;border-radius:17px;border:1px solid rgba(160,140,255,.28);background:rgba(132,108,255,.07)"><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#a99bff;color:#14213c;font-weight:900">${i+1}</span><h3 style="font-size:18px;margin:0">${esc(step.title)}</h3></div><p style="font-size:17px;line-height:1.85;margin:0;white-space:pre-line">${esc(step.body)}</p></section>`).join('')}</div><div style="margin-top:20px;padding:20px;border-radius:16px;background:rgba(60,175,155,.12);border:1px solid rgba(70,195,165,.3)"><strong>🔍 EXEMPLO RESOLVIDO</strong><p style="font-size:17px;line-height:1.85;margin:12px 0 0;white-space:pre-line">${esc(lesson.workedExample)}</p></div></div>`:''}
 <div class="panel" style="margin:18px 0;padding:24px"><span class="tag">ETAPA 3 DE 4 • ENTENDA</span><h2 style="margin:12px 0">Um exemplo para cada conceito</h2><p style="font-size:15px;line-height:1.7">Leia cada exemplo. Observe o que acontece e por que ele representa o conceito estudado.</p>
 <div style="display:grid;gap:16px;margin-top:18px">
