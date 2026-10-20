@@ -16,6 +16,14 @@ for(const device of devices){
    await expect(page.locator('.answer')).toHaveCount(4);
    await page.locator('.answer').first().click();
    await expect(page.locator('.feedback')).toBeVisible();
+   for(const year of ['1','9']){
+    await page.getByRole('button',{name:'Trocar ano'}).click();
+    await page.locator('#grade-select').selectOption(year);
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3)).toBe(false);
+    await page.locator('.subject').first().click();await page.locator('.topic').first().click();
+    await page.getByRole('button',{name:'Começar questionário →'}).first().click();
+    await expect(page.locator('.answer')).toHaveCount(4);
+   }
    expect(errors).toEqual([]);
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3);
    expect(overflow,'Rolagem horizontal inesperada').toBe(false);
