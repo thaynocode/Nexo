@@ -12,7 +12,7 @@ for(const device of devices){
    await page.locator('.topic').first().click();
    await page.getByRole('button',{name:/Estudar este conteúdo/}).click();
    await expect(page.getByText('EXPLICAÇÃO DA PROFESSORA')).toBeVisible();
-   await expect(page.locator('figure img')).toHaveAttribute('src',/^data:image\/svg\+xml/);
+   await expect(page.locator('.unsplash-image-wrap img').first()).toHaveAttribute('src',/^https:\/\/images\.unsplash\.com/);
    await page.locator('.panel button.primary:enabled').last().click();
    await expect(page.locator('.answer')).toHaveCount(4);
    await page.locator('.answer').first().click();

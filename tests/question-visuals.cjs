@@ -1,0 +1,5 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),c={window:{},URL};
+for(const file of ['question-visuals.js','context-photos.js','unsplash-exercises.js'])vm.runInNewContext(fs.readFileSync('public/'+file,'utf8'),c);
+for(const genre of ['Convite','Receita','Reportagem','Bilhete','Notícia','Fábula','Entrevista','Poema','Conto','Verbete','Anúncio','Manual','Crônica','Editorial','Diário','Carta']){assert(c.window.NEXO_OPTION_PHOTO(genre).includes('images.unsplash.com'));const explanation=c.window.NEXO_OPTION_EXPLANATION_TEXT(genre);assert(explanation.includes('<p>'));assert(!explanation.includes('<svg'));}
+assert.equal(c.window.NEXO_OPTION_PHOTO('<img onerror=alert(1)>'),'');assert.equal(c.window.NEXO_OPTION_EXPLANATION_TEXT('desconhecido'),'');assert(c.window.NEXO_OPTION_EXPLANATION_TEXT('Reportagem').includes('investigação'));
+const html=fs.readFileSync('index.html','utf8');assert(html.includes('NEXO_OPTION_PHOTO(o.text)'));assert(html.includes('NEXO_OPTION_EXPLANATION_TEXT(q.choices.find(o=>o.correct).text)'));console.log('PASS: imagens do Unsplash nos gêneros e explicações sem SVG.');
