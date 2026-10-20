@@ -12,5 +12,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validar aulas e ilustrações
-        run: node scripts/validate-content.cjs
+      - name: Gerar bancos e validar questionários de todos os anos
+        run: |
+          node curriculum/build.cjs
+          git diff --exit-code -- public/grade-bank.js
+          node scripts/validate-grades.cjs

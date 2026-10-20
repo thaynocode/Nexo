@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "NEXO 6º — Jornada de Aprendizagem",
-  "short_name": "NEXO 6º",
-  "description": "Aprenda e evolua com desafios de todas as matérias do 6º ano.",
+  "name": "NEXO — Ensino Fundamental",
+  "short_name": "NEXO",
+  "description": "Questionários do 1º ao 9º ano, com níveis e progresso por ano escolar.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
