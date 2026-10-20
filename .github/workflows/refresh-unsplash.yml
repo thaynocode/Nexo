@@ -15,10 +15,15 @@ jobs:
       - run: node scripts/generate-unsplash.cjs --refresh
         env:
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+      - run: node scripts/generate-context-photos.cjs
+        env:
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
       - uses: peter-evans/create-pull-request@v7
         with:
           branch: content/refresh-unsplash
           title: Atualizar fotografias de contexto do Unsplash
           commit-message: Atualizar metadados públicos do Unsplash
           body: Atualiza as fotos das lições e questionários, preservando créditos e URLs originais.
-          add-paths: public/unsplash-photos.js
+          add-paths: |
+            public/unsplash-photos.js
+            public/context-photos.js

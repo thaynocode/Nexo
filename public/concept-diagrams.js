@@ -19,39 +19,8 @@ const axis=(x,y,w,h)=>line(x,y,x+w,y,'#e6d69a',3)+line(x,y,x,y-h,'#e6d69a',3);
 if(s===1){
 switch(t){
 case 0:{
-// Cada maçã representa uma unidade. Os cestos mostram os grupos iguais.
-const apple=(x,y,color='#ee7775',opacity=1)=>'<g class="fruit" transform="translate('+x+' '+y+')" opacity="'+opacity+'"><path d="M0-8 C-12-18-20-5-16 6 C-13 18-6 20 0 16 C6 20 13 18 16 6 C20-5 12-18 0-8Z" fill="'+color+'" stroke="#ffe2b5" stroke-width="1.3"/><path d="M0-8q-1-8 4-12" fill="none" stroke="#dbb680" stroke-width="3"/><path d="M2-14q6-10 14-4q-3 9-14 4" fill="#82ce9b"/></g>';
-const basket=(x,y,label)=>rect(x,y,96,95,'#12263c',12)+line(x+8,y+79,x+88,y+79,'#d5b586',3)+text(x+48,y+113,label,14);
-let fruitArt=rect(0,0,760,650,'#101d34',24)+text(380,35,'OPERAÇÕES COM MAÇÃS',24,'#f0edff',800);
-const panels=[['ADIÇÃO','3 + 2 = 5','Junte 3 maçãs com 2 maçãs.'],['SUBTRAÇÃO','8 − 3 = 5','Retire 3 das 8 maçãs.'],['MULTIPLICAÇÃO','3 × 4 = 12','3 cestos com 4 maçãs em cada.'],['DIVISÃO','12 ÷ 3 = 4','Reparta 12 maçãs em 3 cestos.']];
-panels.forEach((panel,i)=>{
- const x=20+(i%2)*375,y=60+Math.floor(i/2)*285;
- fruitArt+=rect(x,y,345,270,palettes[i])+text(x+172,y+29,panel[0],20);
- if(i===0){
-  for(let j=0;j<3;j++)fruitArt+=apple(x+61+j*36,y+100);
-  fruitArt+=text(x+172,y+106,'+',25);
-  for(let j=0;j<2;j++)fruitArt+=apple(x+231+j*36,y+100,'#94c86e');
-  fruitArt+=text(x+97,y+159,'3 maçãs',17)+text(x+249,y+159,'2 maçãs',17);
- } else if(i===1){
-  for(let j=0;j<8;j++){
-   const fx=x+80+(j%4)*61,fy=y+80+Math.floor(j/4)*62;
-   fruitArt+=apple(fx,fy,'#ee7775',j<3?0.35:1);
-   if(j<3)fruitArt+=line(fx-18,fy-21,fx+19,fy+21,'#fff0dc',3);
-  }
- } else {
-  for(let group=0;group<3;group++){
-   const bx=x+16+group*106,by=y+65;
-   fruitArt+=basket(bx,by,i===2?'4 maçãs':'4 para cada');
-   for(let j=0;j<4;j++)fruitArt+=apple(bx+29+(j%2)*39,by+30+Math.floor(j/2)*38,['#ee7775','#94c86e','#efb96d'][group]);
-  }
- }
- fruitArt+=text(x+172,y+224,panel[1],25,'#fff5d4',800)+text(x+172,y+250,panel[2],15);
-});
-fruitArt+=text(380,638,'Cada maçã representa 1 unidade.',17,'#c2d3e8');
-const fruitCaption='Operações com frutas: 3 maçãs mais 2 são 5; de 8, retire 3 e ficam 5; 3 grupos de 4 são 12; 12 repartidas em 3 cestos dão 4 em cada.';
-const fruitSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" role="img" aria-label="'+esc(fruitCaption)+'">'+fruitArt+'</svg>';
-return {src:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(fruitSvg),caption:fruitCaption};
-}
+const items=[['ADIÇÃO','3 + 2 = 5',5],['SUBTRAÇÃO','8 − 3 = 5',8],['MULTIPLICAÇÃO','3 × 4 = 12',12],['DIVISÃO','12 ÷ 3 = 4',12]];
+items.forEach((v,i)=>{let x=26+(i%2)*363,y=61+Math.floor(i/2)*180;a+=rect(x,y,345,164,palettes[i]);a+=text(x+172,y+31,v[0],19);a+=text(x+172,y+145,v[1],22);a+=dotGrid(x+85,y+63,v[2],6,i===1?'#f7c487':'#92dfd3');if(i===1)for(let j=0;j<3;j++)a+=line(x+81+j*21,y+52,x+93+j*21,y+72,'#fc8496',3);if(i===3)a+=line(x+82,y+78,x+215,y+78,'#f6d78b',2)});caption='Quantidades reais para adição, subtração, multiplicação e divisão';break;}
 case 1:{for(let i=0;i<4;i++)a+=rect(90+i*145,127,120,110,i===0?'#f0c66f':'#385779');a+=text(380,97,'1 INTEIRO DIVIDIDO EM 4 PARTES IGUAIS',22);a+=text(380,301,'1/4 = 0,25 = 25%',28);a+=text(380,363,'QUATRO QUARTOS FORMAM UM INTEIRO',17);caption='Modelo de área com um quarto destacado';break;}
 case 2:{a+=rect(200,105,350,190,'#316d74');a+=rect(216,121,318,158,'#182d46');a+=line(200,320,550,320,'#f1ce7b',4);a+=text(375,345,'6 m',20);a+=text(162,205,'4 m',20);a+=text(380,198,'ÁREA = 24 m²',25);a+=text(380,383,'PERÍMETRO = 20 m',21);caption='Retângulo de seis por quatro metros com área e perímetro';break;}
 case 3:{const ns=[['MILHAR','2','2.000'],['CENTENA','3','300'],['DEZENA','4','40'],['UNIDADE','7','7']];ns.forEach((v,i)=>{let x=25+i*180;a+=rect(x,95,169,235,palettes[i]);a+=text(x+84,135,v[0],18);a+=text(x+84,240,v[1],64);a+=text(x+84,295,v[2],24)});a+=text(380,385,'2.000 + 300 + 40 + 7 = 2.347',23);caption='Quadro de valor posicional do número 2.347';break;}
