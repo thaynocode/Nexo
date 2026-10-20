@@ -43,6 +43,47 @@ test('novos questionários continuam disponíveis offline',async({page,context})
 test('todas as séries e níveis abrem dez questões com quatro alternativas',async({page})=>{
  test.setTimeout(120000);
  await page.goto('http://127.0.0.1:4173/');
- const count=await page.evaluate(()=>{let count=0;for(const year of [1,2,3,4,5,6,7,8,9]){switchGrade(year);for(let s=0;s<DATA.length;s++)for(let t=0;t<DATA[s].topics.length;t++)for(let l=0;l<3;l++){sIdx=s;tIdx=t;start(l);if(questions.length!==10||document.querySelectorAll('.answer').length!==4)throw Error(`${year} ${s} ${t} ${l}`);count++}}return count});
+ const count=await page.evaluate(()=>{let count=0;for(const year of [1,2,3,4,5,6,7,8,9]){switchGrade(year);for(let s=0;s<DATA.length;s++)for(let t=0;t<DATA[s].topics.length;t++)for(let l=0;l<3;l++){sIdx=s;tIdx=t;for(let prior=0;prior<l;prior++)state.scores[id(s,t,prior)]=threshold[prior];start(l);if(questions.length!==10||document.querySelectorAll('.answer').length!==4)throw Error(`${year} ${s} ${t} ${l}`);count++}}return count});
  expect(count).toBe(609);
+});
+
+for(const year of [1,2,3,4,5,6,7,8,9]){
+ test(`limites, gravação e revisão isolados — ${year}º ano`,async({page})=>{
+  await page.goto('http://127.0.0.1:4173/');
+  const result=await page.evaluate(year=>{
+   state={scores:{},attempts:{},mistakes:{},xp:0};switchGrade(year);
+   const keys=[0,1,2].map(l=>id(0,0,l));
+   const denied=start(1)===false&&view==='home';
+   const boundaries=[];
+   for(const [l,goal] of [[0,7],[1,8],[2,9]]){
+    for(const score of [goal-1,goal]){
+     start(l);correct=score;missed=questions.slice(score);finish();
+     boundaries.push({l,score,open:l<2?openLevel(0,0,l+1):null,pass:result().includes('Excelente!')});
+    }
+   }
+   const snapshot=JSON.stringify(state),xp=state.xp;
+   start(2,true);const reviewed=questions.length;
+   correct=questions.length;finish();const reviewUnchanged=JSON.stringify(state)===snapshot;
+   const stored=JSON.parse(localStorage.getItem(key));
+   switchGrade(year===6?1:6);
+   const other={best:best(0,0,0),attempts:attempts(),unlocked:openLevel(0,0,1),mistakes:state.mistakes[id(0,0,2)]||[]};
+   switchGrade(year);
+   return {keys,denied,boundaries,reviewed,reviewUnchanged,other,xp,stored,attempts:attempts()};
+  },year);
+  expect(result.denied).toBe(true);
+  expect(result.keys).toEqual([0,1,2].map(l=>`${year===6?'':year+':'}0-0-${l}`));
+  expect(result.boundaries.map(b=>b.pass)).toEqual([false,true,false,true,false,true]);
+  expect(result.boundaries.slice(0,4).map(b=>b.open)).toEqual([false,true,false,true]);
+  expect(result.reviewed).toBe(1);expect(result.reviewUnchanged).toBe(true);
+  expect(result.other).toEqual({best:0,attempts:0,unlocked:false,mistakes:[]});
+  expect(result.xp).toBe(288);expect(result.attempts).toBe(6);
+  await page.reload();await expect(page.locator('#grade-select')).toHaveValue(String(year));
+  await expect(page).toHaveTitle(`NEXO • ${year}º Ano`);
+  expect(await page.evaluate(()=>state)).toEqual(result.stored);
+ });
+}
+test('casos combinados preservam separação visual',async({page})=>{
+ await page.goto('http://127.0.0.1:4173/');
+ await page.evaluate(()=>{switchGrade(9);state.scores[id(0,0,0)]=7;start(1)});
+ expect(await page.locator('.question').evaluate(el=>getComputedStyle(el).whiteSpace)).toBe('pre-line');
 });

@@ -17,3 +17,4 @@ jobs:
           node curriculum/build.cjs
           git diff --exit-code -- public/grade-bank.js
           node scripts/validate-grades.cjs
+          node tests/grade-runtime.cjs

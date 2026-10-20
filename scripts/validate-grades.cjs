@@ -23,3 +23,35 @@ assert.equal(fs.readFileSync('sw.js','utf8'),fs.readFileSync('public/sw.js','utf
 assert(fs.readFileSync('sw.js','utf8').includes('/grade-bank.js'));
 assert(!/unsplash/i.test(html));assert(!html.includes("if(view==='study')"));
 console.log(`OK: ${topics} novas trilhas, ${questions-770} novas questões nos três níveis e 770 questões originais preservadas.`);
+// Cada alternativa combinada deve resolver os casos na ordem apresentada.
+// Reconstrói o gabarito a partir das questões-base, sem usar combine().
+let combined=0;
+for(const [g,subjects] of Object.entries(grades))for(const s of subjects)for(const t of s.topics){
+ if(s.name==='Matemática'&&!(+g===1&&t.name==='Formas no cotidiano'))continue;
+ for(const [level,bank] of Object.entries(t.advanced))for(const q of bank){
+  const cases=q.q.split(/\n(?=\d+\) )/).slice(1).map(line=>line.replace(/^\d+\) /,''));
+  assert.equal(cases.length,+level===1||+g<=2?2:3,`${g} ${t.name}: casos`);
+  const answers=cases.map(text=>{const base=t.questions.find(item=>item.q===text);assert(base,`Caso sem origem: ${text}`);return base.opts[base.answer]});
+  const matching=q.opts.map(opt=>opt.split(' • ').every((value,i)=>value===answers[i])&&opt.split(' • ').length===answers.length);
+  assert.equal(matching.filter(Boolean).length,1,`${g} ${t.name}: gabarito combinado ambíguo`);
+  assert.equal(matching[q.answer],true,`${g} ${t.name}: gabarito combinado errado`);
+  combined++;
+ }
+}
+// Referências calculadas separadamente para o primeiro problema de cada eixo,
+// em TODOS os níveis (não apenas o iniciante).
+const advancedGolden={
+ 1:[['4','24','44'],['4','5','6'],null,['2 reais','3 reais','4 reais']],
+ 2:[['23','53','83'],['4','6','8'],['3','6','9'],['15 reais','22 reais','29 reais']],
+ 3:[['171','271','371'],['6','10','14'],['12 m','28 m','44 m'],['60 min','60 min','60 min']],
+ 4:[['405','1.005','1.605'],['3','3','3'],['6 m²','9 m²','12 m²'],['7,75 reais','8,75 reais','9,75 reais']],
+ 5:[['4','10','20'],['12,75 m','13,75 m','14,75 m'],['12 cm³','18 cm³','24 cm³'],['6','7','8']],
+ 7:[['3 °C','0 °C','-3 °C'],['3','3','3'],['100°','95°','90°'],['6','7','8']],
+ 8:[['4','8','16'],['2','2','2'],['12 cm²','15 cm²','18 cm²'],['90 reais','85 reais','80 reais']],
+ 9:[['2 × 10^3','2 × 10^4','2 × 10^5'],['−2 e 2','−2 e 2','−2 e 2'],['5 cm','10 cm','15 cm'],['5','6','7']]
+};
+for(const [g,topics] of Object.entries(advancedGolden)){
+ const math=grades[g].find(s=>s.name==='Matemática');
+ topics.forEach((levels,i)=>levels?.forEach((answer,l)=>{const q=(l?math.topics[i].advanced[l]:math.topics[i].questions)[0];assert.equal(q.opts[q.answer],answer,`${g} ${math.topics[i].name} nível ${l}`)}));
+}
+console.log(`OK: ${combined} gabaritos combinados reconstruídos e 93 referências matemáticas nos três níveis.`);
