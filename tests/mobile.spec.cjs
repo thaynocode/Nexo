@@ -3,17 +3,16 @@ const devices=[{name:'Android 360',width:360,height:800},{name:'iPhone 390',widt
 for(const device of devices){
  test.describe(device.name,()=>{
   test.use({viewport:{width:device.width,height:device.height},isMobile:true,hasTouch:true});
-  test('navegação, estudo, imagem e quiz',async({page})=>{
+  test('navegação direta ao questionário e correção',async({page})=>{
    const errors=[];
    page.on('pageerror',error=>errors.push(error.message));
    await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
    await expect(page.getByText('NEXO',{exact:false}).first()).toBeVisible();
    await page.locator('.subject-card, .subject').first().click();
    await page.locator('.topic').first().click();
-   await page.getByRole('button',{name:/Estudar este conteúdo/}).click();
-   await expect(page.getByText('EXPLICAÇÃO DA PROFESSORA')).toBeVisible();
-   await expect(page.locator('figure img')).toHaveAttribute('src',/^data:image\/svg\+xml/);
-   await page.locator('.panel button.primary:enabled').last().click();
+   await expect(page.getByRole('button',{name:/Estudar/})).toHaveCount(0);
+   await expect(page.locator('.level button:disabled')).toHaveCount(2);
+   await page.getByRole('button',{name:'Começar questionário →'}).first().click();
    await expect(page.locator('.answer')).toHaveCount(4);
    await page.locator('.answer').first().click();
    await expect(page.locator('.feedback')).toBeVisible();
