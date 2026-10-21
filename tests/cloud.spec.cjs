@@ -18,7 +18,7 @@ test('login simulado, sincronização e exclusão segura em falha',async({page})
  expect(requests.some(x=>x.includes('/rest/v1/learning_progress'))).toBe(true);
  await page.evaluate(()=>{state.xp=24;save()});
  await page.getByRole('button',{name:/Ver análise de aprendizagem/}).click();
- page.on('dialog',dialog=>dialog.accept());
+ page.on('dialog',dialog=>dialog.accept().catch(()=>{}));
  await page.getByRole('button',{name:/Apagar meu progresso/}).click();
  const xp=await page.evaluate(()=>state.xp);
  expect(xp).toBe(24);
