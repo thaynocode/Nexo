@@ -44,3 +44,5 @@ for(const [g,ss]of Object.entries(grades))ss.forEach((s,si)=>s.topics.forEach((t
 for(const [g,data]of Object.entries(grades))for(const s of data){if(s.topics.length<1)throw Error(`Sem conteúdo: ${g} ${s.name}`);for(const t of s.topics)for(const bank of [t.questions,t.advanced[1],t.advanced[2]]){if(bank.length!==10||new Set(bank.map(q=>q.q)).size!==10)throw Error('Banco inválido '+t.name);}}
 fs.writeFileSync(root+'/public/grade-bank.js','// Gerado por curriculum/build.cjs. Não editar manualmente.\nwindow.NEXO_GRADES='+JSON.stringify(grades)+';\n');
 console.log(Object.entries(grades).map(([g,ss])=>`${g}º: ${ss.length} matérias, ${ss.reduce((a,s)=>a+s.topics.length,0)} trilhas`).join('\n'));
+
+require('./bncc/build.cjs');

@@ -120,3 +120,30 @@ test('desafios avançados continuam legíveis em tela estreita',async({page})=>{
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3)).toBe(false);
  }
 });
+
+test('mapa BNCC filtra objetivos e preserva registros sem alterar a jornada',async({page})=>{
+ await page.goto('http://127.0.0.1:4173/');
+ const before=await page.evaluate(()=>JSON.stringify(state));
+ await page.getByRole('button',{name:'Mapa BNCC',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Mapa BNCC · 6º ano'})).toBeVisible();
+ await page.locator('#bncc-search').fill('EF06MA13');await page.getByRole('button',{name:'Buscar',exact:true}).click();
+ await page.getByRole('button',{name:'Abrir objetivo e prática'}).click();
+ await expect(page.getByRole('heading',{name:'EF06MA13 · O desconto e sua base'})).toBeVisible();
+ await page.locator('#bncc-evidence').fill('25% de 80 é 20. O livro custa R$ 60.');
+ await page.getByRole('button',{name:'Salvar registro',exact:true}).click();
+ await expect(page.locator('#bncc-save-status')).toHaveText('Registro salvo neste navegador.');
+ expect(await page.evaluate(()=>JSON.stringify(state))).toBe(before);
+ await page.reload();await page.getByRole('button',{name:'Mapa BNCC',exact:true}).click();
+ await page.locator('#bncc-search').fill('EF06MA13');await page.getByRole('button',{name:'Buscar',exact:true}).click();await page.getByRole('button',{name:'Abrir objetivo e prática'}).click();
+ await expect(page.locator('#bncc-evidence')).toHaveValue('25% de 80 é 20. O livro custa R$ 60.');
+ await page.getByRole('button',{name:'Trocar ano',exact:true}).click();await page.locator('#grade-select').selectOption('7');
+ await page.getByRole('button',{name:'Mapa BNCC',exact:true}).click();await page.locator('#bncc-component').selectOption('Computação');
+ await expect(page.getByRole('heading',{name:/EF07CO01/})).toBeVisible();await expect(page.getByRole('heading',{name:/EF06CO01/})).toHaveCount(0);
+});
+
+test('mapa BNCC informa falha de rede e permite nova tentativa',async({page})=>{
+ let fail=true;await page.route('**/bncc-catalog.json',route=>fail?route.abort():route.continue());
+ await page.goto('http://127.0.0.1:4173/');await page.getByRole('button',{name:'Mapa BNCC',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Tentar novamente'})).toBeVisible();fail=false;
+ await page.getByRole('button',{name:'Tentar novamente'}).click();await expect(page.locator('#bncc-component')).toBeVisible();
+});

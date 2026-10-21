@@ -22,7 +22,7 @@ Os 840 problemas matemáticos avançados possuem geradores específicos por eixo
 
 A seleção de temas usa como referência a [BNCC oficial do MEC](https://basenacionalcomum.mec.gov.br/images/BNCC_EI_EF_110518_versaofinal_site.pdf), especialmente os quadros de Língua Portuguesa (p. 89–191), Arte (p. 199–211), Educação Física (p. 224–239), Inglês (p. 247–263), Matemática (p. 276–319), Ciências (p. 331–351), Geografia (p. 367–395) e História (p. 403–433), segundo a numeração impressa.
 
-As perguntas são autorais. Não se trata de transcrição de livros, de uma avaliação oficial nem de uma cobertura exaustiva de todas as habilidades da BNCC. Alguns objetos são previstos em blocos de anos: a distribuição aqui organiza uma sequência de aprendizagem e deve ser ajustada à proposta pedagógica da escola. A seleção mantém as áreas que já existiam no Nexo; não acrescenta Ensino Religioso.
+As perguntas são autorais. Não se trata de transcrição de livros, de uma avaliação oficial nem de uma cobertura exaustiva de todas as habilidades da BNCC. Alguns objetos são previstos em blocos de anos: a distribuição aqui organiza uma sequência de aprendizagem e deve ser ajustada à proposta pedagógica da escola. Os questionários mantêm suas áreas originais. A área complementar **Mapa BNCC** inclui Ensino Religioso e Computação. Veja [BNCC-MAPPING.md](BNCC-MAPPING.md) para o inventário, a implementação parcial e as lacunas explícitas.
 
 ## Manutenção e compatibilidade
 
@@ -31,6 +31,8 @@ As perguntas são autorais. Não se trata de transcrição de livros, de uma ava
 - O banco original do 6º ano no HTML e seu hash permanecem intactos como referência de compatibilidade; ele não substitui o banco revisado exibido. Não reordene matérias nem trilhas.
 - As chaves históricas `s-t-l` continuam sendo do 6º ano; os demais anos usam `ano:s-t-l`. Notas, tentativas e desbloqueios não são apagados nem migrados para outra trilha. XP permanece global.
 - Erros antigos salvos como índices usam o banco histórico correspondente, inclusive o antigo fallback de bancos parciais e a inserção premium do 6º ano. Novas tentativas guardam uma cópia da questão errada, de modo que uma revisão posterior do currículo não mude seu enunciado.
-- O service worker inclui o artefato e usa cache v31. O banco contém também os itens históricos necessários para revisar erros antigos. Estes são conteúdo de compatibilidade, não os novos desafios.
+- O service worker inclui o artefato e usa cache v32. O banco contém também os itens históricos necessários para revisar erros antigos. Estes são conteúdo de compatibilidade, não os novos desafios.
 - Execute `node scripts/validate-grades.cjs`, `node tests/question-quality.cjs`, `node tests/grade-runtime.cjs` e os testes Playwright. Os testes verificam estrutura, gabaritos derivados, referências matemáticas, índices históricos e fluxos; não representam uma validação pedagógica externa da cobertura integral da BNCC.
 - O relatório CSV continua correspondendo ao ano selecionado. A exclusão informa que remove o progresso de todos os anos.
+
+O mapa curricular é gerado junto com os bancos. Execute também `node tests/bncc-content.cjs`; o CSV público distingue atividades específicas de roteiros mediados ainda sem situação própria.

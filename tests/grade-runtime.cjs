@@ -7,7 +7,7 @@ function boot(storage=new Map(),legacySixth=false){
   localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},
   NexoCloud:{updateBar(){},queue(){},init(){}},scrollTo(){},console};
  ctx.window=ctx;vm.createContext(ctx);
- for(const file of ['public/grade-bank.js','public/premium-bank-humanidades.js','public/premium-bank-exatas-artes.js'])vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
+ for(const file of ['public/bncc.js','public/grade-bank.js','public/premium-bank-humanidades.js','public/premium-bank-exatas-artes.js'])vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
  if(legacySixth)delete ctx.NEXO_GRADES[6];
  const script=html.slice(html.indexOf('<script>const DATA=')+8,html.indexOf('</script>',html.indexOf('<script>const DATA=')));
  vm.runInContext(script,ctx);return {ctx,storage,run:code=>vm.runInContext(code,ctx)};
