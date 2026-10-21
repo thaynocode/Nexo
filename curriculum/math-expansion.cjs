@@ -30,7 +30,7 @@ addMath(7,'Expressões algébricas',Array.from({length:10},(_,i)=>{
 }));
 addMath(8,'Funções e relações entre grandezas',Array.from({length:10},(_,i)=>{
  const x=i+1,m=i%4+2,b=i%3+1,a=m*x+b;
- return ['Na função f(x) = '+m+'x + '+b+', qual é f('+x+')?',a,'Aplicamos a regra da função: '+m+' × '+x+' + '+b+' = '+a+'.',wrong(String(a),[a+m,a-m,a+b,a+1].map(String))];
+ return ['Na função f(x) = '+m+'x + '+b+', qual é f('+x+')?',a,'Aplicamos a regra da função: '+m+' × '+x+' + '+b+' = '+a+'.',wrong(String(a),[a+m,a-m,a+m+1,a+m+2].map(String))];
 }));
 addMath(9,'Razões trigonométricas no triângulo retângulo',Array.from({length:10},(_,i)=>{
  const triples=[[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,12,15]],t=triples[i%5],scale=i<5?1:2,[op,adj,hyp]=t.map(x=>x*scale),a=op+'/'+hyp;
