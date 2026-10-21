@@ -10,7 +10,7 @@ for(const device of devices){
    await expect(page.getByText('NEXO',{exact:false}).first()).toBeVisible();
    await page.locator('.subject-card, .subject').first().click();
    await page.locator('.topic').first().click();
-   await expect(page.getByRole('button',{name:/Estudar/})).toHaveCount(0);
+   await expect(page.getByRole('button',{name:/Estudar conteúdo/})).toBeVisible();
    await expect(page.locator('.level button:disabled')).toHaveCount(2);
    await page.getByRole('button',{name:'Começar questionário →'}).first().click();
    await expect(page.locator('.answer')).toHaveCount(4);
