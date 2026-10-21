@@ -6,7 +6,7 @@ for(const device of devices){
   test('navegação direta ao questionário e correção',async({page})=>{
    const errors=[];
    page.on('pageerror',error=>errors.push(error.message));
-   await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
+   await page.goto((process.env.NEXO_TEST_URL||'http://127.0.0.1:4173/'),{waitUntil:'domcontentloaded'});
    await expect(page.getByText('NEXO',{exact:false}).first()).toBeVisible();
    await page.locator('.subject-card, .subject').first().click();
    await page.locator('.topic').first().click();

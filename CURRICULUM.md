@@ -1,26 +1,47 @@
-# Questionários do Ensino Fundamental
+# Currículo e questionários do Nexo
 
-O Nexo oferece seleção do 1º ao 9º ano. Os 77 temas e as 770 perguntas-base do 6º ano foram preservados. Nos demais anos, esta seleção reúne 126 temas, cada um com dez questões por nível (3.780 questões ao todo).
+A versão reorganiza os questionários do 1º ao 9º ano em percursos com referências à BNCC. Todos os itens ativos têm código, ano ou bloco, justificativa de vínculo e indicação do tipo de evidência. O aplicativo continua dedicado a questionários, com correção após a resposta; não exibe aulas expositivas nem usa Unsplash.
 
-| Anos | Matérias | Trilhas por ano |
-| --- | --- | --- |
-| 1º a 5º | Português, Matemática, Ciências, História, Geografia, Artes e Educação Física | 15 |
-| 7º a 9º | As sete anteriores e Inglês | 17 |
+## Organização
 
-Há três níveis e as metas de 7, 8 e 9 acertos. Matemática usa situações numéricas com variação de dificuldade. Nas demais áreas, o iniciante trabalha uma questão por vez; os níveis seguintes relacionam dois e três casos. No 1º e 2º ano, os desafios combinados ficam limitados a dois casos e podem ser acompanhados por um adulto durante a leitura. As correções permanecem nos questionários. Não há aulas expositivas nem integração com Unsplash.
+| Ano | Componentes | Percursos ativos | Itens nos três níveis |
+| --- | ---: | ---: | ---: |
+| 1º | 9 | 12 | 360 |
+| 2º | 9 | 13 | 390 |
+| 3º | 9 | 13 | 390 |
+| 4º | 9 | 14 | 420 |
+| 5º | 9 | 13 | 390 |
+| 6º | 10 | 16 | 480 |
+| 7º | 10 | 15 | 450 |
+| 8º | 10 | 14 | 420 |
+| 9º | 10 | 13 | 390 |
 
-## Referência e abrangência
+São 123 percursos e 3.690 itens, contando as ofertas por ano e nível. Os cenários de Arte e Educação Física pertencentes a um mesmo bloco são retomados nos anos abrangidos; esses números não representam 3.690 situações-base diferentes.
 
-A seleção de temas usa como referência a [BNCC oficial do MEC](https://basenacionalcomum.mec.gov.br/images/BNCC_EI_EF_110518_versaofinal_site.pdf), especialmente os quadros de Língua Portuguesa (p. 89–191), Arte (p. 199–211), Educação Física (p. 224–239), Inglês (p. 247–263), Matemática (p. 276–319), Ciências (p. 331–351), Geografia (p. 367–395) e História (p. 403–433), segundo a numeração impressa.
+Português trabalha alfabetização, leitura, usos da língua, pesquisa, argumentação e revisão; Matemática articula números, álgebra, geometria, grandezas e dados; Ciências aborda materiais, vida, ambiente, Terra e Universo. História e Geografia ampliam contextos, grupos sociais, territórios, fontes, mapas e problemas socioambientais. Arte reúne artes visuais, música, dança, teatro e integração de linguagens. Educação Física inclui jogos, esportes, ginásticas, danças, lutas e aventuras nos blocos pertinentes. Inglês começa no 6º ano. Computação tem percurso próprio e Ensino Religioso é plural, não confessional e opcional, sem bloquear as conquistas principais.
 
-As perguntas são autorais. Não se trata de transcrição de livros, de uma avaliação oficial nem de uma cobertura exaustiva de todas as habilidades da BNCC. Alguns objetos são previstos em blocos de anos: a distribuição aqui organiza uma sequência de aprendizagem e deve ser ajustada à proposta pedagógica da escola. A seleção mantém as áreas que já existiam no Nexo; não acrescenta Ensino Religioso.
+## Fontes e alcance
 
-## Manutenção
+O catálogo contém 1.408 códigos únicos: 1.304 da BNCC consolidada e 104 do complemento de Computação.
 
-- Edite os arquivos de `curriculum/` e execute `node curriculum/build.cjs`.
-- O banco público gerado é `public/grade-bank.js` e funciona offline pelo service worker.
-- Execute `node scripts/validate-grades.cjs` e os testes Playwright.
-- Preserve a ordem de matérias e trilhas existentes: os identificadores de progresso usam seus índices.
-- As chaves históricas `s-t-l` continuam representando o 6º ano. Novos anos usam `ano:s-t-l`. O formato de armazenamento e sincronização continua o mesmo.
-- Notas, erros, tentativas e desbloqueios são separados por ano. XP é um total de todos os anos. O relatório CSV corresponde ao ano selecionado; apagar o progresso remove todos os anos e informa isso na confirmação.
-- A escolha do ano fica salva no aparelho. Instalações existentes abrem inicialmente no 6º ano, preservando a jornada anterior.
+- [BNCC consolidada — MEC](https://basenacionalcomum.mec.gov.br/images/BNCC_EI_EF_110518_versaofinal_site.pdf).
+- [Cópia consolidada utilizada na extração — UFAM](https://cefort.ufam.edu.br/tainacan/wp-content/uploads/2020/04/BNCC_EI_EF_110518_versaofinal_site.pdf).
+- [Complemento de Computação — Secretaria de Educação de Goiás](https://goias.gov.br/educacao/wp-content/uploads/sites/40/2025/11/BNCCComputaoCompletodiagramado.pdf).
+
+Cada referência guarda descrição, anos, componente e posição da página no arquivo PDF. Objetos de conhecimento cuja associação tabular não foi recuperada com segurança ficam sem preenchimento, com consulta à fonte. O código impresso EF05CO011 é normalizado para EF05CO11, preservando a origem no histórico da extração.
+
+**Referência curricular não é certificação de domínio nem cobertura integral da BNCC.** O mapa identifica as referências com questões e as que ainda não possuem itens associados. A cobertura de habilidades continua parcial. Reconhecer uma estratégia de escrita, criação, investigação ou movimento não equivale a produzir um texto, fazer uma apresentação, experimentar ou executar uma prática corporal. Essas aprendizagens exigem outras evidências em contextos adequados. O aplicativo é material complementar, não um currículo escolar completo.
+
+O marcador editorial identifica revisão interna do item e de seu vínculo; não representa homologação oficial nem avaliação pedagógica externa. Os níveis novos trabalham decisão/interpretação, justificativa e crítica de uma hipótese, além de variações numéricas nos bancos matemáticos específicos.
+
+## Migração e histórico
+
+Os bancos anteriores sem vínculo conferido foram arquivados. Não são oferecidos para novas avaliações. Seus índices e resultados não foram reutilizados nos novos percursos. As 77 trilhas e 770 perguntas-base históricas do 6º ano permanecem preservadas no código-fonte, com verificação por hash. Nos demais anos, as fontes anteriores também permanecem versionadas; o banco público leva somente seus nomes e índices para consulta ao histórico.
+
+As notas antigas aparecem em Meu progresso e no CSV. XP é preservado entre anos. Duas trilhas de Matemática do 4º e 5º anos foram substituídas com a revisão bncc-2026; suas notas antigas ficam separadas das notas novas. As chaves históricas s-t-l continuam representando o 6º ano; outros anos usam ano:s-t-l, com sufixo de revisão quando necessário. A exclusão de progresso mantém a confirmação existente e abrange todos os anos.
+
+## Manutenção e testes
+
+Execute node curriculum/build.cjs e node scripts/validate-bncc.cjs; depois rode os testes Playwright. A validação confere códigos, anos, componentes, alternativas, estímulos, bancos publicados e preservação histórica. O relatório curriculum/coverage-report.json distingue itens ativos e índices arquivados; não mede domínio de habilidades. Os arquivos públicos gerados devem ser versionados junto com suas fontes.
+
+Para reproduzir o catálogo, instale pdfplumber e execute python curriculum/extract-catalog.py --bncc-pdf caminho/BNCC.pdf --computacao-pdf caminho/Computacao.pdf. A extração requer conferência posterior nos documentos originais. O service worker armazena a interface, os questionários e as referências para uso offline após o primeiro acesso completo.

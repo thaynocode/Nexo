@@ -1,0 +1,56 @@
+{
+  "definition": "Contagem de itens e vínculos, não de domínio ou cobertura integral de habilidades.",
+  "topics": 247,
+  "questions": 3690,
+  "linked": 3690,
+  "activeTopics": 123,
+  "activeQuestions": 3690,
+  "archivedTopics": 124,
+  "byYear": {
+    "1": {
+      "topics": 27,
+      "linkedQuestions": 360,
+      "unlinkedQuestions": 0
+    },
+    "2": {
+      "topics": 28,
+      "linkedQuestions": 390,
+      "unlinkedQuestions": 0
+    },
+    "3": {
+      "topics": 28,
+      "linkedQuestions": 390,
+      "unlinkedQuestions": 0
+    },
+    "4": {
+      "topics": 28,
+      "linkedQuestions": 420,
+      "unlinkedQuestions": 0
+    },
+    "5": {
+      "topics": 27,
+      "linkedQuestions": 390,
+      "unlinkedQuestions": 0
+    },
+    "6": {
+      "topics": 16,
+      "linkedQuestions": 480,
+      "unlinkedQuestions": 0
+    },
+    "7": {
+      "topics": 32,
+      "linkedQuestions": 450,
+      "unlinkedQuestions": 0
+    },
+    "8": {
+      "topics": 31,
+      "linkedQuestions": 420,
+      "unlinkedQuestions": 0
+    },
+    "9": {
+      "topics": 30,
+      "linkedQuestions": 390,
+      "unlinkedQuestions": 0
+    }
+  }
+}
