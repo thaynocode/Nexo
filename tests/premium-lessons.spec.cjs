@@ -14,7 +14,7 @@ test('guia de estudo integrado, imagem acessível e ampliação no 6º ano',asyn
  await page.locator('.nexo-photo-zoom').first().click();
  await expect(page.getByRole('dialog',{name:'Imagem ampliada'})).toHaveClass(/open/);
  await page.getByRole('button',{name:/Fechar imagem/}).click();
- await expect(page.getByRole('dialog',{name:'Imagem ampliada'})).not.toHaveClass(/open/);
+ await expect(page.locator('#nexo-viewer')).not.toHaveClass(/open/);
 });
 test('guia de revisão gerado sem misturar a aula do 6º ano em outras séries',async({page})=>{
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
@@ -22,7 +22,7 @@ test('guia de revisão gerado sem misturar a aula do 6º ano em outras séries',
  await page.locator('.subject').first().click();
  await page.locator('.topic').first().click();
  await page.getByRole('button',{name:/Estudar conteúdo/}).click();
- await expect(page.getByText('REVISÃO GUIADA')).toBeVisible();
+ await expect(page.getByText('REVISÃO GUIADA',{exact:true})).toBeVisible();
  await expect(page.locator('.nexo-study-card').first()).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3)).toBe(false);
 });
