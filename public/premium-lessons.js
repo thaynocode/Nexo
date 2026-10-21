@@ -40,6 +40,14 @@ function figure(subject,title,caption){
  const alt='Fotografia ilustrativa de '+String(title||subject||'conteúdo escolar').toLowerCase();
  return '<figure class="nexo-premium-photo" data-nexo-photo data-subject="'+escText(subject)+'" data-topic="'+escText(title)+'"><button class="nexo-photo-zoom" type="button" aria-label="Ampliar imagem" onclick="openLessonImage(this.closest(\'figure\').querySelector(\'img\'))"><img loading="lazy" decoding="async" src="'+photoFor(subject,title)+'" alt="'+escText(alt)+'" referrerpolicy="no-referrer"><span>⤢ Ampliar</span></button><figcaption>'+escText(caption||('Explore visualmente: '+title+'.'))+' <small>Imagem ilustrativa · Unsplash</small></figcaption></figure>';
 }
+
+function nexoPhotoFallback(img){
+ const pool=['photo-1503676260728-1c00da094a0b','photo-1509062522246-3755977927d7','photo-1516979187457-637abb4f9353'];
+ const n=Number(img.dataset.fallbackAttempt||0)+1;img.dataset.fallbackAttempt=String(n);
+ if(n>=pool.length){img.closest('figure')?.classList.add('nexo-photo-unavailable');img.alt='Imagem ilustrativa indisponível';return}
+ img.src=photoUrl(pool[n]);
+}
+
 function getAuthoredLesson(){
  const all=window.NEXO_LESSONS;
  return grade===6&&Array.isArray(all)&&Array.isArray(all[sIdx])?all[sIdx][tIdx]||null:null;
@@ -79,7 +87,7 @@ function addStyles(){
  .nexo-photo-zoom img{display:block;width:100%;height:clamp(210px,42vw,420px);object-fit:cover;transition:transform .3s}
  .nexo-photo-zoom:hover img{transform:scale(1.015)}
  .nexo-photo-zoom span{position:absolute;right:14px;bottom:14px;background:#080d20d9;color:white;border:1px solid #ffffff55;border-radius:12px;padding:10px 13px;font-size:13px;font-weight:700}
- .nexo-premium-photo figcaption{padding:13px 17px;color:var(--muted);font-size:13px;line-height:1.55}
+ .nexo-premium-photo figcaption{padding:13px 17px;color:var(--muted);font-size:13px;line-height:1.55}.nexo-photo-unavailable .nexo-photo-zoom img{display:none}.nexo-photo-unavailable .nexo-photo-zoom span{position:static;display:block;padding:22px;color:var(--muted)}
  .nexo-premium-photo figcaption small{display:block;margin-top:4px;opacity:.7}
  .nexo-study-section{margin:30px 0}
  .nexo-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
