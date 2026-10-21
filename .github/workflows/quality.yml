@@ -18,3 +18,4 @@ jobs:
           git diff --exit-code -- public/grade-bank.js
           node scripts/validate-grades.cjs
           node tests/grade-runtime.cjs
+          node tests/question-quality.cjs

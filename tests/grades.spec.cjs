@@ -82,8 +82,41 @@ for(const year of [1,2,3,4,5,6,7,8,9]){
   expect(await page.evaluate(()=>state)).toEqual(result.stored);
  });
 }
-test('casos combinados preservam separação visual',async({page})=>{
+test('justificativas preservam separação visual',async({page})=>{
  await page.goto('http://127.0.0.1:4173/');
  await page.evaluate(()=>{switchGrade(9);state.scores[id(0,0,0)]=7;start(1)});
  expect(await page.locator('.question').evaluate(el=>getComputedStyle(el).whiteSpace)).toBe('pre-line');
+});
+
+test('bancos revisados do sexto ano usam feedback específico e preservam revisão antiga',async({page})=>{
+ await page.goto('http://127.0.0.1:4173/');
+ const previous=await page.evaluate(()=>{switchGrade(6);state.scores['0-0-0']=8;state.mistakes['0-0-1']=[1];start(1,true);return DATA[0].topics[0].legacy[1][1].q});
+ await expect(page.locator('.question')).toHaveText(previous);
+ await page.getByRole('button',{name:'Trocar ano',exact:true}).click();
+ await page.locator('#grade-select').selectOption('6');
+ await page.evaluate(()=>{sIdx=1;tIdx=0;start(0)});
+ await expect(page.locator('.question')).not.toHaveText(/^Quanto é/);
+ await page.locator('.answer').first().click();
+ await expect(page.locator('.feedback')).toContainText('Resposta correta:');
+ expect(await page.locator('.feedback').innerText()).not.toContain('Confira a operação e suas etapas');
+});
+test('Mestre avalia respostas propostas em vez de concatenar alternativas',async({page})=>{
+ await page.goto('http://127.0.0.1:4173/');
+ await page.evaluate(()=>{switchGrade(4);sIdx=0;tIdx=0;state.scores[id(0,0,0)]=7;state.scores[id(0,0,1)]=8;start(2)});
+ await expect(page.locator('.question')).toContainText('Resposta apresentada:');
+ const choices=await page.locator('.answer span').allTextContents();
+ expect(choices.every(text=>/correta|corretas/.test(text))).toBe(true);
+});
+
+test('desafios avançados continuam legíveis em tela estreita',async({page})=>{
+ await page.setViewportSize({width:360,height:800});
+ await page.goto('http://127.0.0.1:4173/');
+ for(const year of [1,6,9])for(const level of [1,2]){
+  await page.evaluate(({year,level})=>{switchGrade(year);sIdx=0;tIdx=0;for(let l=0;l<level;l++)state.scores[id(0,0,l)]=threshold[l];start(level)},{year,level});
+  await expect(page.locator('.answer')).toHaveCount(4);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3)).toBe(false);
+  await page.locator('.answer').first().click();
+  await expect(page.locator('.feedback')).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3)).toBe(false);
+ }
 });

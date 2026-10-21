@@ -1,13 +1,22 @@
-# Questionários do Ensino Fundamental
+# Questionários do Ensino Fundamental — revisão 2
 
-O Nexo oferece seleção do 1º ao 9º ano. Os 77 temas e as 770 perguntas-base do 6º ano foram preservados. Nos demais anos, esta seleção reúne 126 temas, cada um com dez questões por nível (3.780 questões ao todo).
+O NEXO organiza 203 trilhas do 1º ao 9º ano, com dez questões em cada um dos três níveis: 6.090 itens disponíveis. Os nomes, índices e a ordem das trilhas foram mantidos para preservar a jornada existente.
 
 | Anos | Matérias | Trilhas por ano |
 | --- | --- | --- |
 | 1º a 5º | Português, Matemática, Ciências, História, Geografia, Artes e Educação Física | 15 |
-| 7º a 9º | As sete anteriores e Inglês | 17 |
+| 6º | As sete áreas e Inglês (incluindo a denominação histórica Arte) | 77 |
+| 7º a 9º | As sete áreas e Inglês | 17 |
 
-Há três níveis e as metas de 7, 8 e 9 acertos. Matemática usa situações numéricas com variação de dificuldade. Nas demais áreas, o iniciante trabalha uma questão por vez; os níveis seguintes relacionam dois e três casos. No 1º e 2º ano, os desafios combinados ficam limitados a dois casos e podem ser acompanhados por um adulto durante a leitura. As correções permanecem nos questionários. Não há aulas expositivas nem integração com Unsplash.
+## Demanda por nível
+
+- **Iniciante:** identificar informações e compreender conceitos. Enunciados delimitados; o feedback deve explicar o conceito ou as etapas do cálculo.
+- **Explorador:** relacionar uma resposta à justificativa ou aplicar procedimentos em uma situação matemática. São 1.610 itens de resposta justificada e 420 problemas matemáticos.
+- **Mestre:** conferir respostas propostas, detectar erros e verificar soluções; em Matemática, planejar etapas, trabalhar incógnitas ou comparar resultados. São 1.610 itens de análise e 420 problemas matemáticos.
+
+Os formatos de justificativa e análise são derivados das questões-base, com vínculo explícito a seus itens de origem. Não devem ser apresentados como milhares de situações totalmente independentes. A seleção do Mestre exige verificar as respostas propostas; não basta escolher uma lista de respostas básicas concatenadas. No 1º e 2º ano, a análise envolve duas respostas; nos demais, três. A leitura pode exigir apoio conforme a autonomia da criança.
+
+Os 840 problemas matemáticos avançados possuem geradores específicos por eixo e nível. Exemplos: descobrir uma quantidade inicial, calcular o que sobra após duas ações, distinguir área e perímetro, comparar bases de porcentagem e planejar deslocamentos. A revisão inclui 770 comentários específicos para o 6º ano, enunciados corrigidos e alternativas do mesmo campo semântico em itens delimitados. As metas continuam em 7, 8 e 9 acertos.
 
 ## Referência e abrangência
 
@@ -15,12 +24,13 @@ A seleção de temas usa como referência a [BNCC oficial do MEC](https://basena
 
 As perguntas são autorais. Não se trata de transcrição de livros, de uma avaliação oficial nem de uma cobertura exaustiva de todas as habilidades da BNCC. Alguns objetos são previstos em blocos de anos: a distribuição aqui organiza uma sequência de aprendizagem e deve ser ajustada à proposta pedagógica da escola. A seleção mantém as áreas que já existiam no Nexo; não acrescenta Ensino Religioso.
 
-## Manutenção
+## Manutenção e compatibilidade
 
-- Edite os arquivos de `curriculum/` e execute `node curriculum/build.cjs`.
-- O banco público gerado é `public/grade-bank.js` e funciona offline pelo service worker.
-- Execute `node scripts/validate-grades.cjs` e os testes Playwright.
-- Preserve a ordem de matérias e trilhas existentes: os identificadores de progresso usam seus índices.
-- As chaves históricas `s-t-l` continuam representando o 6º ano. Novos anos usam `ano:s-t-l`. O formato de armazenamento e sincronização continua o mesmo.
-- Notas, erros, tentativas e desbloqueios são separados por ano. XP é um total de todos os anos. O relatório CSV corresponde ao ano selecionado; apagar o progresso remove todos os anos e informa isso na confirmação.
-- A escolha do ano fica salva no aparelho. Instalações existentes abrem inicialmente no 6º ano, preservando a jornada anterior.
+- Edite as fontes em `curriculum/` e execute `node curriculum/build.cjs`. O artefato reproduzível é `public/grade-bank.js`, que inclui agora o 6º ano revisado.
+- `sixth-feedback.cjs` contém comentários específicos por índice; `editorial.cjs` registra correções de enunciado; `distractors.cjs` trata alternativas de enunciados delimitados. `assessment.cjs` produz os formatos de justificativa e análise. `math-sixth.cjs` e `math-progressive.cjs` produzem os problemas avançados por eixo.
+- O banco original do 6º ano no HTML e seu hash permanecem intactos como referência de compatibilidade; ele não substitui o banco revisado exibido. Não reordene matérias nem trilhas.
+- As chaves históricas `s-t-l` continuam sendo do 6º ano; os demais anos usam `ano:s-t-l`. Notas, tentativas e desbloqueios não são apagados nem migrados para outra trilha. XP permanece global.
+- Erros antigos salvos como índices usam o banco histórico correspondente, inclusive o antigo fallback de bancos parciais e a inserção premium do 6º ano. Novas tentativas guardam uma cópia da questão errada, de modo que uma revisão posterior do currículo não mude seu enunciado.
+- O service worker inclui o artefato e usa cache v31. O banco contém também os itens históricos necessários para revisar erros antigos. Estes são conteúdo de compatibilidade, não os novos desafios.
+- Execute `node scripts/validate-grades.cjs`, `node tests/question-quality.cjs`, `node tests/grade-runtime.cjs` e os testes Playwright. Os testes verificam estrutura, gabaritos derivados, referências matemáticas, índices históricos e fluxos; não representam uma validação pedagógica externa da cobertura integral da BNCC.
+- O relatório CSV continua correspondendo ao ano selecionado. A exclusão informa que remove o progresso de todos os anos.
