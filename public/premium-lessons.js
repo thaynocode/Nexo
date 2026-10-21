@@ -129,17 +129,7 @@ async function enrichUnsplash(){
 const originalQuiz=quiz;
 quiz=function(){let html=originalQuiz();if(!questions[idx])return html;return html.replace('<div class="panel"><div class="statline">',''+figure(DATA[sIdx]?.name,DATA[sIdx]?.topics?.[tIdx]?.name,'Imagem de apoio para esta trilha.')+'<div class="panel"><div class="statline">')};
 const originalRender=render;
-render=function(){
- if(view==='study'){
-  addStyles();
-  app.innerHTML=header()+'<div id="nexo-cloudbar" class="cloudbar"></div>'+buildStudy()+'<div class="foot">NEXO • Aprender é evoluir. Guia de estudo e prática complementar.</div>';
-  NexoCloud.updateBar();
-  enrichUnsplash();
-  return;
- }
- originalRender();
- if(view==='quiz'){addStyles();enrichUnsplash()}
-};
+render=function(){originalRender();if(view==='quiz'){addStyles();enrichUnsplash()}};
 addStyles();
 render();
 })();
