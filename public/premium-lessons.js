@@ -126,8 +126,6 @@ async function enrichUnsplash(){
   }catch(e){console.warn('NEXO: imagem premium indisponível; mantendo alternativa.',e)}
  }
 }
-const originalTopic=topic;
-topic=function(){return originalTopic().replace('<div class="levels">','<section class="panel nexo-study-entry" style="margin:18px 0;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap"><div><span class="eyebrow">ANTES DO DESAFIO</span><h2 style="margin:7px 0">Estude primeiro, pratique depois</h2><p style="margin:0">Leia a explicação, explore a imagem e só então comece o questionário.</p></div><button class="primary" onclick="navigate(\'study\')">📖 Estudar conteúdo →</button></section><div class="levels">')};
 const originalQuiz=quiz;
 quiz=function(){let html=originalQuiz();if(!questions[idx])return html;return html.replace('<div class="panel"><div class="statline">',''+figure(DATA[sIdx]?.name,DATA[sIdx]?.topics?.[tIdx]?.name,'Imagem de apoio para esta trilha.')+'<div class="panel"><div class="statline">')};
 const originalRender=render;
