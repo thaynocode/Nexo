@@ -44,8 +44,8 @@ function figure(subject,title,caption){
 function nexoPhotoFallback(img){
  const pool=['photo-1503676260728-1c00da094a0b','photo-1509062522246-3755977927d7','photo-1516979187457-637abb4f9353'];
  const n=Number(img.dataset.fallbackAttempt||0)+1;img.dataset.fallbackAttempt=String(n);
- if(n>=pool.length){img.closest('figure')?.classList.add('nexo-photo-unavailable');img.alt='Imagem ilustrativa indisponível';return}
- img.src=photoUrl(pool[n]);
+ if(n>pool.length){img.closest('figure')?.classList.add('nexo-photo-unavailable');img.alt='Imagem ilustrativa indisponível';return}
+ img.src=photoUrl(pool[n-1]);
 }
 
 function getAuthoredLesson(){
