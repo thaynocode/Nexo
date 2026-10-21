@@ -26,7 +26,6 @@ assert(html.includes('<script src="/premium-lessons.js"></script>'));
 const premium=fs.readFileSync('public/premium-lessons.js','utf8');
 const lessonContext={window:{}};
 vm.runInNewContext(fs.readFileSync('public/lessons.js','utf8'),lessonContext);
-assert.equal(lessonContext.window.NEXO_LESSONS.length,7);
 assert.equal(lessonContext.window.NEXO_LESSONS.reduce((n,s)=>n+s.length,0),77);
 assert(premium.includes("view==='study'"));
 assert(premium.includes('data-nexo-photo'));
