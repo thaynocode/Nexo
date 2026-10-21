@@ -1,8 +1,4 @@
-/* NEXO Premium Study Experience
- * Adds guided study screens, accessible real-photo illustrations and optional
- * Unsplash search. No API key is embedded: set window.NEXO_UNSPLASH_ACCESS_KEY
- * through the deployment's public configuration only if you choose to enable it.
- */
+/* NEXO — fotografias de apoio aos questionários, sem aulas ou área de estudo. */
 (function(){
 'use strict';
 const photoSets=[
@@ -48,40 +44,9 @@ function nexoPhotoFallback(img){
  img.src=photoUrl(pool[n-1]);
 }
 
-function getAuthoredLesson(){
- const all=window.NEXO_LESSONS;
- return grade===6&&Array.isArray(all)&&Array.isArray(all[sIdx])?all[sIdx][tIdx]||null:null;
-}
-function buildStudy(){
- const topic=DATA[sIdx]?.topics?.[tIdx];
- const subject=DATA[sIdx]?.name||'Conteúdo';
- if(!topic)return '<section class="panel"><h2>Conteúdo indisponível</h2><button class="ghost" onclick="navigate(\'topic\')">Voltar</button></section>';
- const lesson=getAuthoredLesson();
- const title=lesson?.title||topic.name;
- const summary=lesson?.summary||('Nesta revisão guiada de '+topic.name+', vamos retomar as ideias principais de '+subject.toLowerCase()+' e relacioná-las às questões da trilha. Leia cada conceito e observe por que ele é importante antes de iniciar o desafio.');
- const objective=lesson?.objective||('Compreender os conceitos centrais de '+topic.name+' e aplicá-los às situações apresentadas no questionário.');
- const sections=Array.isArray(lesson?.sections)?lesson.sections:[];
- const steps=Array.isArray(lesson?.lessonSteps)?lesson.lessonSteps:[];
- const examples=Array.isArray(lesson?.examples)?lesson.examples:[];
- const contexts=Array.isArray(lesson?.contextExamples)?lesson.contextExamples:[];
- const questions=(topic.questions||[]).filter(q=>q&&q.q&&Array.isArray(q.opts)&&Number.isInteger(q.answer));
- const cards=[];
- if(steps.length)steps.forEach((x,i)=>cards.push('<article class="nexo-study-card"><span class="nexo-step">ETAPA '+(i+1)+'</span><h3>'+escText(x.title||'Ideia principal')+'</h3><p>'+escText(x.body||'')+'</p></article>'));
- else if(sections.length)sections.forEach((x,i)=>cards.push('<article class="nexo-study-card"><span class="nexo-step">CONCEITO '+(i+1)+'</span><h3>'+escText(x.heading||'Ideia principal')+'</h3><p>'+escText(x.text||'')+'</p></article>'));
- else questions.slice(0,3).forEach((q,i)=>cards.push('<article class="nexo-study-card"><span class="nexo-step">PONTO-CHAVE '+(i+1)+'</span><h3>'+escText(q.q)+'</h3><p><strong>Resposta:</strong> '+escText(q.opts[q.answer])+'</p><p>'+escText(q.explanation||'Compare as alternativas e explique o motivo da escolha.')+'</p></article>'));
- const extraExamples=[...examples.map(x=>({title:x.title||'Exemplo explicado',text:x.text||''})),...contexts.map(x=>({title:x.concept||'No cotidiano',text:x.explanation||''}))];
- const photoCaption=lesson?.visual?.labels?.length?'Observe os elementos visuais e conecte-os às ideias da aula.':'Observe a fotografia e relacione-a ao assunto estudado.';
- return '<button class="back" onclick="navigate(\'topic\')">← Voltar à trilha</button><section class="nexo-study-hero"><span class="eyebrow">NEXO • ROTA DE APRENDIZAGEM</span><h1>'+escText(title)+'</h1><p>'+escText(summary)+'</p><div class="nexo-objective"><strong>O QUE VOCÊ VAI APRENDER</strong><p>'+escText(objective)+'</p></div></section>'+figure(subject,title,photoCaption)+'<section class="nexo-study-section"><div class="section-head"><h2>Vamos entender</h2><span class="muted">'+(lesson?'AULA GUIADA':'REVISÃO GUIADA')+'</span></div><div class="nexo-study-grid">'+cards.join('')+'</div></section>'+(extraExamples.length?'<section class="nexo-study-section"><div class="section-head"><h2>Exemplos e conexões</h2></div><div class="nexo-study-grid">'+extraExamples.slice(0,6).map(x=>'<article class="nexo-study-card"><h3>'+escText(x.title)+'</h3><p>'+escText(x.text)+'</p></article>').join('')+'</div></section>':'')+(lesson?.studyTip?'<aside class="nexo-study-tip"><strong>💡 DICA DE ESTUDO</strong><p>'+escText(lesson.studyTip)+'</p></aside>':'')+'<section class="nexo-study-start"><div><span class="eyebrow">HORA DE PRATICAR</span><h2>Vamos testar o que você aprendeu?</h2><p>Responda às questões, leia o feedback e use os erros como pistas para aprender.</p></div><button class="primary" onclick="navigate(\'topic\');start(0)">Começar nível iniciante →</button></section>';
-}
 function addStyles(){
  if(document.getElementById('nexo-premium-styles'))return;
  const s=document.createElement('style');s.id='nexo-premium-styles';s.textContent=`
- .nexo-study-hero{padding:clamp(24px,4vw,42px);border:1px solid #554a8d;border-radius:26px;background:radial-gradient(circle at 90% 10%,#433779 0,transparent 40%),linear-gradient(135deg,#20234a,#121b31);margin:18px 0}
- .nexo-study-hero h1{max-width:850px;font-size:clamp(30px,5vw,48px);margin:12px 0}
- .nexo-study-hero>p{max-width:850px;font-size:17px}
- .nexo-objective{margin-top:22px;padding:17px 19px;border-radius:16px;background:#ffffff0b;border:1px solid #ffffff18}
- .nexo-objective strong,.nexo-step{font-size:11px;letter-spacing:1.3px;color:#c5b8ff;font-weight:800}
- .nexo-objective p{margin:8px 0 0;color:#f0edff}
  .nexo-premium-photo{margin:22px 0 28px;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--surface)}
  .nexo-photo-zoom{display:block;position:relative;width:100%;padding:0;border:0;background:#10182b;cursor:zoom-in;text-align:left}
  .nexo-photo-zoom img{display:block;width:100%;height:clamp(210px,42vw,420px);object-fit:cover;transition:transform .3s}
@@ -89,19 +54,6 @@ function addStyles(){
  .nexo-photo-zoom span{position:absolute;right:14px;bottom:14px;background:#080d20d9;color:white;border:1px solid #ffffff55;border-radius:12px;padding:10px 13px;font-size:13px;font-weight:700}
  .nexo-premium-photo figcaption{padding:13px 17px;color:var(--muted);font-size:13px;line-height:1.55}.nexo-photo-unavailable .nexo-photo-zoom img{display:none}.nexo-photo-unavailable .nexo-photo-zoom span{position:static;display:block;padding:22px;color:var(--muted)}
  .nexo-premium-photo figcaption small{display:block;margin-top:4px;opacity:.7}
- .nexo-study-section{margin:30px 0}
- .nexo-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
- .nexo-study-card{background:var(--surface);border:1px solid var(--line);border-radius:19px;padding:23px;min-width:0}
- .nexo-study-card h3{font-size:19px;line-height:1.35;margin:10px 0}
- .nexo-study-card p{line-height:1.7;margin:8px 0}
- .nexo-study-card strong{color:#e7e0ff}
- .nexo-study-tip{border:1px solid #7b6ac8;background:#201c43;border-radius:18px;padding:20px;margin:22px 0}
- .nexo-study-tip p{margin:7px 0 0;color:#f1edff}
- .nexo-study-start{display:flex;justify-content:space-between;align-items:center;gap:20px;border:1px solid #554a8d;border-radius:23px;padding:24px;background:linear-gradient(115deg,#211e48,#172a3c);margin:28px 0}
- .nexo-study-start h2{margin:7px 0;font-size:clamp(20px,3vw,28px)}
- .nexo-study-start p{margin:0}
- .nexo-study-start .primary{flex-shrink:0}
- @media(max-width:650px){.nexo-study-grid{grid-template-columns:1fr}.nexo-study-start{align-items:stretch;flex-direction:column}.nexo-study-start .primary{width:100%}.nexo-study-card{padding:19px}.nexo-photo-zoom img{height:240px}}
  `;document.head.appendChild(s);
 }
 function parseCache(){try{return JSON.parse(localStorage.getItem(photoCacheKey)||'{}')}catch{return {}}}
