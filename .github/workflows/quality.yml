@@ -15,5 +15,8 @@ jobs:
       - name: Gerar bancos e validar questionários de todos os anos
         run: |
           node curriculum/build.cjs
-          git diff --exit-code -- public/grade-bank.js
+          git diff --exit-code -- public/grade-bank.js public/bncc-catalog.json public/bncc-mapping.csv
           node scripts/validate-grades.cjs
+          node tests/grade-runtime.cjs
+          node tests/question-quality.cjs
+          node tests/bncc-content.cjs
