@@ -30,6 +30,6 @@ test('questões mostram ilustração com alternativa acessível',async({page})=>
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
  await page.locator('.subject').first().click();await page.locator('.topic').first().click();
  await page.getByRole('button',{name:'Começar questionário →'}).first().click();
- await expect(page.locator('.nexo-premium-photo img')).toHaveAttribute('alt',/.+/);
+ await expect(page.locator('.nexo-premium-photo img')).toHaveAttribute('alt',/.+/);\n await page.waitForFunction(()=>{const el=document.querySelector('.nexo-premium-photo img');return !!el&&el.complete&&el.naturalWidth>0;},null,{timeout:20000});
  await expect(page.locator('.answer')).toHaveCount(4);
 });
