@@ -17,7 +17,7 @@ const photoSets=[
  {subject:/geografia/i,urls:[
   'photo-1441974231531-c6227db76b6e','photo-1470071459604-3b5ec3a7fe05','photo-1500530855697-b586d89ba3ee']},
  {subject:/artes/i,urls:[
-  'photo-1513364776144-60967b0f800f','photo-146 painting','photo-1513475382585-d06e58bcb0e0']},
+  'photo-1513364776144-60967b0f800f','photo-1460661419201-fd4cecdf8a8b','photo-1513475382585-d06e58bcb0e0']},
  {subject:/educação física/i,urls:[
   'photo-1461896836934-ffe607ba8211','photo-1530549387789-4c1017266635','photo-1517649763962-0c623066013b']},
  {subject:/natureza|planta|animal|ecossistema|ambiente|terra|água|energia|corpo|célula|universo|clima/i,urls:[
