@@ -8,7 +8,7 @@ test('login simulado, sincronização e exclusão segura em falha',async({page})
   if(url.includes('/rest/v1/learning_progress')&&req.method()==='DELETE')return route.fulfill({status:503,contentType:'application/json',body:'{"message":"Offline simulado"}'});
   return route.fulfill({status:201,contentType:'application/json',body:'{}'});
  });
- await page.goto('http://127.0.0.1:4173/',{waitUntil:'domcontentloaded'});
+ await page.goto((process.env.NEXO_TEST_URL||'http://127.0.0.1:4173/'),{waitUntil:'domcontentloaded'});
  await page.getByRole('button',{name:/Entrar \/ Criar conta/}).click();
  await page.locator('#cloud-email').fill('teste@example.invalid');
  await page.locator('#cloud-pass').fill('senha-de-teste');
@@ -18,8 +18,10 @@ test('login simulado, sincronização e exclusão segura em falha',async({page})
  expect(requests.some(x=>x.includes('/rest/v1/learning_progress'))).toBe(true);
  await page.evaluate(()=>{state.xp=24;save()});
  await page.getByRole('button',{name:/Ver análise de aprendizagem/}).click();
- page.on('dialog',dialog=>dialog.accept());
+ let deletionFinished;const deletionResult=new Promise(resolve=>deletionFinished=resolve);
+ page.on('dialog',async dialog=>{const message=dialog.message();await dialog.accept();if(dialog.type()==='alert')deletionFinished(message)});
  await page.getByRole('button',{name:/Apagar meu progresso/}).click();
+ expect(await deletionResult).toContain('Seu progresso foi preservado');
  const xp=await page.evaluate(()=>state.xp);
  expect(xp).toBe(24);
 });
