@@ -21,5 +21,18 @@ assert.equal(grades[7].find(s=>s.name==='Matemática').topics[0].advanced[2][0].
 assert.equal(grades[9].find(s=>s.name==='Matemática').topics[2].advanced[2][0].opts[0],'15 cm');
 assert.equal(fs.readFileSync('sw.js','utf8'),fs.readFileSync('public/sw.js','utf8'));
 assert(fs.readFileSync('sw.js','utf8').includes('/grade-bank.js'));
-assert(!/unsplash/i.test(html));assert(!html.includes("if(view==='study')"));
+// A experiência de estudo fica isolada em um módulo carregado após o app principal.
+assert(html.includes('<script src="/premium-lessons.js"></script>'));
+const premium=fs.readFileSync('public/premium-lessons.js','utf8');
+const lessonContext={window:{}};
+vm.runInNewContext(fs.readFileSync('public/lessons.js','utf8'),lessonContext);
+assert.equal(lessonContext.window.NEXO_LESSONS.length,7);
+assert.equal(lessonContext.window.NEXO_LESSONS.reduce((n,s)=>n+s.length,0),77);
+assert(premium.includes("view==='study'"));
+assert(premium.includes('data-nexo-photo'));
+assert(premium.includes('fm=webp'));
+assert(premium.includes('openLessonImage'));
+assert(premium.includes('api.unsplash.com/search/photos'));
+assert(!/sk_(?:live|test)_[A-Za-z0-9]+/.test(premium),'Não embuta chaves secretas no módulo público');
+assert(fs.readFileSync('sw.js','utf8').includes('/premium-lessons.js'));
 console.log(`OK: ${topics} novas trilhas, ${questions-770} novas questões nos três níveis e 770 questões originais preservadas.`);
