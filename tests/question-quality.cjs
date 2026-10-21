@@ -33,3 +33,6 @@ assert(grades[6][7].topics[7].questions[9].q.includes('cinco jogadores'));
 assert.equal(grades[2][0].topics[0].questions[5].opts[0],'lápis');
 assert(!grades[9][3].topics[1].questions[3].q.includes('regime nazista'));
 console.log(`OK: ${checked} problemas matemáticos novos conferidos pelos enunciados e regressões editoriais verificadas.`);
+
+for(const q of grades[5][1].topics[0].advanced[2]){const v=Number(q.opts[q.answer].replaceAll('.','').replace(',','.'));assert(Number.isInteger(v),'Quantidade fracionária de sementes: '+q.q)}
+for(const [g,t] of [[5,2],[8,2]])assert(new Set(grades[g][1].topics[t].advanced[2].map(q=>q.opts[q.answer])).size>1,'Altura não pode ser sempre a mesma em toda a etapa');
