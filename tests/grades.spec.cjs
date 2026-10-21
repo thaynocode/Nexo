@@ -44,6 +44,13 @@ test('novos questionários continuam disponíveis offline',async({page,context})
 test('todas as séries e níveis abrem dez questões com quatro alternativas',async({page})=>{
  test.setTimeout(120000);
  await page.goto((process.env.NEXO_TEST_URL||'http://127.0.0.1:4173/'));
- const count=await page.evaluate(()=>{let count=0;for(const year of [1,2,3,4,5,6,7,8,9]){switchGrade(year);for(let s=0;s<DATA.length;s++)for(const {index:t}of activeTopics(s))for(let l=0;l<3;l++){sIdx=s;tIdx=t;start(l);if(questions.length!==10||questions.some(q=>!q.bncc?.length)||document.querySelectorAll('.answer').length!==4)throw Error(`${year} ${s} ${t} ${l}`);count++}}return count});
+ const count=await page.evaluate(()=>{let count=0;for(const year of [1,2,3,4,5,6,7,8,9]){switchGrade(year);for(let s=0;s<DATA.length;s++)for(const {index:t}of activeTopics(s))for(let l=0;l<3;l++){sIdx=s;tIdx=t;for(let prior=0;prior<l;prior++)state.scores[id(s,t,prior)]=threshold[prior];start(l);if(questions.length!==10||questions.some(q=>!q.bncc?.length)||document.querySelectorAll('.answer').length!==4)throw Error(`${year} ${s} ${t} ${l}`);count++}}return count});
  expect(count).toBe(369);
+});
+
+test('limites 7 e 8 bloqueiam início direto em todos os anos',async({page})=>{
+ await page.goto(process.env.NEXO_TEST_URL||'http://127.0.0.1:4173/');
+ const results=await page.evaluate(()=>[1,2,3,4,5,6,7,8,9].map(g=>{switchGrade(g);sIdx=0;tIdx=activeTopics(0)[0].index;state={scores:{},attempts:{},mistakes:{},xp:0};const checks=[];for(const level of [1,2]){state.scores[id(sIdx,tIdx,level-1)]=threshold[level-1]-1;checks.push(start(level)===false);state.scores[id(sIdx,tIdx,level-1)]=threshold[level-1];checks.push(start(level)!==false&&questions.length===10);}checks.push(start(-1)===false,start(3)===false);return checks}));
+ expect(results.every(row=>row.every(Boolean))).toBe(true);
+ await page.reload();await expect(page).toHaveTitle('NEXO • 9º Ano');
 });

@@ -25,9 +25,9 @@ test('tabela e gráfico têm dados acessíveis; computação apresenta referênc
  await page.goto(url);
  await page.evaluate(()=>{switchGrade(1);sIdx=1;tIdx=DATA[1].topics.findIndex(t=>t.name==='Leitura de tabelas e gráficos');start(0)});
  await expect(page.locator('.quiz-stimulus table')).toBeVisible();await expect(page.locator('caption')).toContainText('Frutas');
- await page.evaluate(()=>{start(1)});await expect(page.locator('.quiz-bars')).toBeVisible();
+ await page.evaluate(()=>{state.scores[id(sIdx,tIdx,0)]=7;start(1)});await expect(page.locator('.quiz-bars')).toBeVisible();
  await page.getByText('Ver os dados em tabela',{exact:true}).click();await expect(page.locator('.quiz-stimulus table')).toBeVisible();
- await page.evaluate(()=>{switchGrade(9);sIdx=DATA.findIndex(s=>s.name==='Computação');tIdx=0;start(2)});
+ await page.evaluate(()=>{switchGrade(9);sIdx=DATA.findIndex(s=>s.name==='Computação');tIdx=0;state.scores[id(sIdx,tIdx,0)]=7;state.scores[id(sIdx,tIdx,1)]=8;start(2)});
  await page.locator('.curriculum-objective summary').click();await expect(page.locator('.curriculum-objective')).toContainText('EF09CO');
 });
 test('banco anterior sem vínculo fica arquivado e não pode iniciar nova avaliação',async({page})=>{
